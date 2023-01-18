@@ -3,56 +3,73 @@ import "./App.css"
 
 function App() {
   const [data, setData] = useState<any>()
-  const [error, setError] = useState(null)
-  const [isLoaded, setIsLoaded] = useState(false)
-  const [items, setItems] = useState<any[]>([])
+  const [fetchData, setFetchData] = useState<any>()
+  const [currentCoin, setCurrentCoin] = useState<string>("BTC")
+
+  const coins = ["BTC", "LTC", "ETH", "NEO", "BNB", "QTUM", "EOS"]
 
   useEffect(() => {
-    const ws = new WebSocket(
-      "wss://stream.binance.com:9443/ws/btcusdt@kline_1d"
-    )
+    const ws = new WebSocket(`wss://stream.binance.com:443/ws/ltcusdt@trade`)
 
     ws.onmessage = (ev: MessageEvent<any>) => {
       const _data = JSON.parse(ev.data)
       setData(_data)
     }
-
-    fetch("https://api.binance.com/api/v3/aggTrades?symbol=BTCUSDT")
-      .then((res) => res.json())
-      .then(
-        (result) => {
-          setIsLoaded(true)
-          setItems(result)
-          console.log(result)
-        },
-        (error) => {
-          setIsLoaded(true)
-          setError(error)
-        }
-      )
   }, [])
+
+  useEffect(() => {
+    let isSubscribed = true
+    const fetchData = async () => {
+      const data = await fetch(
+        `https://api.binance.com/api/v3/ticker/price?symbol=${currentCoin}USDT`
+      )
+      const json = await data.json()
+      if (isSubscribed) {
+        setFetchData(json)
+      }
+    }
+
+    fetchData().catch(console.error)
+
+    return () => {
+      isSubscribed = false
+    }
+  }, [currentCoin])
 
   return (
     <div className="App">
       <header className="App-body">
-        <h2>Real time crypto prices</h2>
-        <h3>BNBBTC Kline/Candlestick data with web3 socket</h3>
-        <div>Open price: {parseFloat(data?.k?.o).toFixed(2)}</div>
-        <div>Close price: {parseFloat(data?.k?.c).toFixed(2)}</div>
-        <div>High price: {parseFloat(data?.k?.h).toFixed(2)}</div>
-        <div>Low price: {parseFloat(data?.k?.l).toFixed(2)}</div>
-        <div>Base asset volume: {parseFloat(data?.k?.v).toFixed(2)}</div>
-        <h3>Aggregator trades:</h3>
-        <div>
-          {items.map((item) => (
-            <div>
-              <div>Aggregate tradeId: {item?.a}</div>
-              <div>Price: {item?.p}</div>
-              <div>Timestamp: {item?.T}</div>
-              <hr />
-            </div>
-          ))}
-        </div>
+        <h2>BINANCE</h2>
+        <h3>Trade Streams</h3>
+        <h4>
+          The Trade Streams push raw trade information; each trade has a unique
+          buyer and seller.
+        </h4>
+        <h4>For LTC: </h4>
+        <div>Event type: {data?.e}</div>
+        <div>Event time: {data?.E}</div>
+        <div>Symbol: {data?.s}</div>
+        <div>Trade ID: {data?.t}</div>
+        <div>Price: {parseFloat(data?.p).toFixed(2)}</div>
+        <div>Quantity: {data?.q}</div>
+        <div>Buyer order ID: {data?.b}</div>
+        <div>Seller order ID: {data?.a}</div>
+        <div>Trade time: {data?.T}</div>
+        <h1>
+          Price for{" "}
+          <div>
+            <select
+              onChange={(e: React.ChangeEvent<HTMLSelectElement>) => {
+                setCurrentCoin(e.target.value)
+              }}
+            >
+              {coins.map((coin) => (
+                <option key={coin}>{coin}</option>
+              ))}
+            </select>{" "}
+          </div>
+          to USDT: {parseFloat(fetchData?.price).toFixed(2)}
+        </h1>
       </header>
     </div>
   )
