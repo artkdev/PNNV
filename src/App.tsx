@@ -5,8 +5,10 @@ function App() {
   const [data, setData] = useState<any>()
   const [fetchData, setFetchData] = useState<any>()
   const [currentCoin, setCurrentCoin] = useState<string>("BTC")
+  const [currentCurrency, setCurrentCurrency] = useState<string>("USDT")
 
   const coins = ["BTC", "LTC", "ETH", "NEO", "BNB", "QTUM", "EOS"]
+  const currency = ["USDT", "EUR", "GBP"]
 
   useEffect(() => {
     const ws = new WebSocket(`wss://stream.binance.com:443/ws/ltcusdt@trade`)
@@ -15,26 +17,20 @@ function App() {
       const _data = JSON.parse(ev.data)
       setData(_data)
     }
+    fetchPrice()
   }, [])
 
-  useEffect(() => {
-    let isSubscribed = true
-    const fetchData = async () => {
+  const fetchPrice = async () => {
+    try {
       const data = await fetch(
-        `https://api.binance.com/api/v3/ticker/price?symbol=${currentCoin}USDT`
+        `https://api.binance.com/api/v3/ticker/price?symbol=${currentCoin}${currentCurrency}`
       )
       const json = await data.json()
-      if (isSubscribed) {
-        setFetchData(json)
-      }
+      setFetchData(json)
+    } catch (err) {
+      console.error(err)
     }
-
-    fetchData().catch(console.error)
-
-    return () => {
-      isSubscribed = false
-    }
-  }, [currentCoin])
+  }
 
   return (
     <div className="App">
@@ -55,12 +51,14 @@ function App() {
         <div>Buyer order ID: {data?.b}</div>
         <div>Seller order ID: {data?.a}</div>
         <div>Trade time: {data?.T}</div>
+        <hr />
         <h1>
           Price for{" "}
           <div>
             <select
               onChange={(e: React.ChangeEvent<HTMLSelectElement>) => {
                 setCurrentCoin(e.target.value)
+                fetchPrice()
               }}
             >
               {coins.map((coin) => (
@@ -68,7 +66,18 @@ function App() {
               ))}
             </select>{" "}
           </div>
-          to USDT: {parseFloat(fetchData?.price).toFixed(2)}
+          to{" "}
+          <select
+            onChange={(e: React.ChangeEvent<HTMLSelectElement>) => {
+              setCurrentCurrency(e.target.value)
+              fetchPrice()
+            }}
+          >
+            {currency.map((cur) => (
+              <option key={cur}>{cur}</option>
+            ))}
+          </select>{" "}
+          : {parseFloat(fetchData?.price).toFixed(2)}
         </h1>
       </header>
     </div>
