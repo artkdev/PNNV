@@ -2,31 +2,79 @@ import React, { useState, useEffect } from "react"
 import "./App.css"
 
 function App() {
-  const [data, setData] = useState<any>()
-  const [fetchData, setFetchData] = useState<any>()
-  const [currentCoin, setCurrentCoin] = useState<string>("BTC")
+  const [exchangeData, setExchangeData] = useState<any>()
+  const [priceChangeDataDay, setPriceChangeDataDay] = useState<any>()
+  const [priceChangeDataHour, setPriceChangeDataHour] = useState<any>()
+  const [priceChangeDataWeek, setPriceChangeDataWeek] = useState<any>()
+  const [currentCoin, setCurrentCoin] = useState<string>("BNB")
   const [currentCurrency, setCurrentCurrency] = useState<string>("USDT")
 
-  const coins = ["BTC", "LTC", "ETH", "NEO", "BNB", "QTUM", "EOS"]
+  const coins = ["BNB", "LTC", "ETH", "NEO", "BTC", "QTUM", "EOS"]
   const currency = ["USDT", "EUR", "GBP"]
 
   useEffect(() => {
-    const ws = new WebSocket(`wss://stream.binance.com:443/ws/ltcusdt@trade`)
-
-    ws.onmessage = (ev: MessageEvent<any>) => {
-      const _data = JSON.parse(ev.data)
-      setData(_data)
-    }
-    fetchPrice()
+    fetchExchangePrice(currentCoin, currentCurrency)
+    fetchPriceChangeDay(currentCoin, currentCurrency)
+    fetchPriceChangeHour(currentCoin, currentCurrency)
+    fetchPriceChangeWeek(currentCoin, currentCurrency)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
-  const fetchPrice = async () => {
+  const fetchExchangePrice = async (
+    _currentCoin: string,
+    _currentCurrency: string
+  ) => {
     try {
       const data = await fetch(
-        `https://api.binance.com/api/v3/ticker/price?symbol=${currentCoin}${currentCurrency}`
+        `https://api.binance.com/api/v3/ticker/price?symbol=${_currentCoin}${_currentCurrency}`
       )
       const json = await data.json()
-      setFetchData(json)
+      setExchangeData(json)
+    } catch (err) {
+      console.error(err)
+    }
+  }
+
+  const fetchPriceChangeDay = async (
+    _currentCoin: string,
+    _currentCurrency: string
+  ) => {
+    try {
+      const data = await fetch(
+        `https://api.binance.com/api/v3/ticker?symbol=${_currentCoin}${_currentCurrency}&windowSize=1d`
+      )
+      const json = await data.json()
+      setPriceChangeDataDay(json)
+    } catch (err) {
+      console.error(err)
+    }
+  }
+
+  const fetchPriceChangeHour = async (
+    _currentCoin: string,
+    _currentCurrency: string
+  ) => {
+    try {
+      const data = await fetch(
+        `https://api.binance.com/api/v3/ticker?symbol=${_currentCoin}${_currentCurrency}&windowSize=1h`
+      )
+      const json = await data.json()
+      setPriceChangeDataHour(json)
+    } catch (err) {
+      console.error(err)
+    }
+  }
+
+  const fetchPriceChangeWeek = async (
+    _currentCoin: string,
+    _currentCurrency: string
+  ) => {
+    try {
+      const data = await fetch(
+        `https://api.binance.com/api/v3/ticker?symbol=${_currentCoin}${_currentCurrency}&windowSize=7d`
+      )
+      const json = await data.json()
+      setPriceChangeDataWeek(json)
     } catch (err) {
       console.error(err)
     }
@@ -35,30 +83,16 @@ function App() {
   return (
     <div className="App">
       <header className="App-body">
-        <h2>BINANCE</h2>
-        <h3>Trade Streams</h3>
-        <h4>
-          The Trade Streams push raw trade information; each trade has a unique
-          buyer and seller.
-        </h4>
-        <h4>For LTC: </h4>
-        <div>Event type: {data?.e}</div>
-        <div>Event time: {data?.E}</div>
-        <div>Symbol: {data?.s}</div>
-        <div>Trade ID: {data?.t}</div>
-        <div>Price: {parseFloat(data?.p).toFixed(2)}</div>
-        <div>Quantity: {data?.q}</div>
-        <div>Buyer order ID: {data?.b}</div>
-        <div>Seller order ID: {data?.a}</div>
-        <div>Trade time: {data?.T}</div>
-        <hr />
         <h1>
-          Price for{" "}
+          (Binance) Price for{" "}
           <div>
             <select
               onChange={(e: React.ChangeEvent<HTMLSelectElement>) => {
+                fetchExchangePrice(e.target.value, currentCurrency)
+                fetchPriceChangeDay(e.target.value, currentCurrency)
+                fetchPriceChangeHour(e.target.value, currentCurrency)
+                fetchPriceChangeWeek(e.target.value, currentCurrency)
                 setCurrentCoin(e.target.value)
-                fetchPrice()
               }}
             >
               {coins.map((coin) => (
@@ -69,16 +103,31 @@ function App() {
           to{" "}
           <select
             onChange={(e: React.ChangeEvent<HTMLSelectElement>) => {
+              fetchExchangePrice(currentCoin, e.target.value)
+              fetchPriceChangeDay(currentCoin, e.target.value)
+              fetchPriceChangeHour(currentCoin, e.target.value)
+              fetchPriceChangeWeek(currentCoin, e.target.value)
               setCurrentCurrency(e.target.value)
-              fetchPrice()
             }}
           >
             {currency.map((cur) => (
               <option key={cur}>{cur}</option>
             ))}
           </select>{" "}
-          : {parseFloat(fetchData?.price).toFixed(2)}
+          : {parseFloat(exchangeData?.price).toFixed(2)}
         </h1>
+        <p>
+          Info {currentCoin} price change (1h):{" "}
+          {parseFloat(priceChangeDataHour?.priceChangePercent).toFixed(2)}%
+        </p>
+        <p>
+          Info {currentCoin} price change (24h):{" "}
+          {parseFloat(priceChangeDataDay?.priceChangePercent).toFixed(2)}%
+        </p>
+        <p>
+          Info {currentCoin} price change (7d):{" "}
+          {parseFloat(priceChangeDataWeek?.priceChangePercent).toFixed(2)}%
+        </p>
       </header>
     </div>
   )
