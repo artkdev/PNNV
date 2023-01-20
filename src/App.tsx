@@ -8,6 +8,7 @@ function App() {
   const [priceChangeDataWeek, setPriceChangeDataWeek] = useState<any>()
   const [krakenAssetPairs, setKrakenAssetPairs] = useState<any>()
   const [krakenTickerInformation, setKrakenTickerInformation] = useState<any>()
+  const [krakenOHLCData, setKrakenOHLCData] = useState<any>()
   const [currentCoin, setCurrentCoin] = useState<string>("BNB")
   const [currentCurrency, setCurrentCurrency] = useState<string>("USDT")
 
@@ -21,6 +22,7 @@ function App() {
     fetchPriceChangeWeek(currentCoin, currentCurrency)
     fetchKrakenAssetPairs()
     fetchKrakenTickerInformation()
+    fetchKrakenOHLCData()
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
@@ -102,11 +104,19 @@ function App() {
         "https://api.kraken.com/0/public/Ticker?pair=XBTUSD"
       )
       const json = await data.json()
-      console.log(
-        "🚀 ~ file: App.tsx:108 ~ fetchKrakenTickerInformation ~ json?.result",
-        json?.result.a
-      )
       setKrakenTickerInformation(json?.result)
+    } catch (err) {
+      console.error(err)
+    }
+  }
+
+  const fetchKrakenOHLCData = async () => {
+    try {
+      const data = await fetch(
+        "https://api.kraken.com/0/public/OHLC?pair=XBTUSD"
+      )
+      const json = await data.json()
+      setKrakenOHLCData(json?.result)
     } catch (err) {
       console.error(err)
     }
@@ -174,6 +184,10 @@ function App() {
           {krakenTickerInformation?.XXBTZUSD?.a[0]},{" "}
           {krakenTickerInformation?.XXBTZUSD?.a[1]},{" "}
           {krakenTickerInformation?.XXBTZUSD?.a[2]}
+        </div>
+        <div>
+          Kraken OHLC Data(XXBTZUSD) (same as candlestick?) last:{" "}
+          {krakenOHLCData?.last}
         </div>
       </header>
     </div>
