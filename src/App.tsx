@@ -6,6 +6,8 @@ function App() {
   const [priceChangeDataDay, setPriceChangeDataDay] = useState<any>()
   const [priceChangeDataHour, setPriceChangeDataHour] = useState<any>()
   const [priceChangeDataWeek, setPriceChangeDataWeek] = useState<any>()
+  const [krakenAssetPairs, setKrakenAssetPairs] = useState<any>()
+  const [krakenTickerInformation, setKrakenTickerInformation] = useState<any>()
   const [currentCoin, setCurrentCoin] = useState<string>("BNB")
   const [currentCurrency, setCurrentCurrency] = useState<string>("USDT")
 
@@ -17,6 +19,8 @@ function App() {
     fetchPriceChangeDay(currentCoin, currentCurrency)
     fetchPriceChangeHour(currentCoin, currentCurrency)
     fetchPriceChangeWeek(currentCoin, currentCurrency)
+    fetchKrakenAssetPairs()
+    fetchKrakenTickerInformation()
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
@@ -80,6 +84,34 @@ function App() {
     }
   }
 
+  const fetchKrakenAssetPairs = async () => {
+    try {
+      const data = await fetch(
+        "https://api.kraken.com/0/public/AssetPairs?pair=XXBTZUSD,XETHXXBT"
+      )
+      const json = await data.json()
+      setKrakenAssetPairs(json?.result)
+    } catch (err) {
+      console.error(err)
+    }
+  }
+
+  const fetchKrakenTickerInformation = async () => {
+    try {
+      const data = await fetch(
+        "https://api.kraken.com/0/public/Ticker?pair=XBTUSD"
+      )
+      const json = await data.json()
+      console.log(
+        "🚀 ~ file: App.tsx:108 ~ fetchKrakenTickerInformation ~ json?.result",
+        json?.result.a
+      )
+      setKrakenTickerInformation(json?.result)
+    } catch (err) {
+      console.error(err)
+    }
+  }
+
   return (
     <div className="App">
       <header className="App-body">
@@ -128,6 +160,21 @@ function App() {
           Info {currentCoin} price change (7d):{" "}
           {parseFloat(priceChangeDataWeek?.priceChangePercent).toFixed(2)}%
         </p>
+        <h1>Kraken requests</h1>
+        <div>
+          1 Tradable asset pairs wsname: {krakenAssetPairs?.XETHXXBT?.wsname}{" "}
+          (XETHXXBT) costmin: {krakenAssetPairs?.XETHXXBT?.costmin}
+        </div>
+        <div>
+          2 Tradable asset pairs wsname: {krakenAssetPairs?.XXBTZUSD?.wsname}{" "}
+          (XXBTZUSD) costmin: {krakenAssetPairs?.XXBTZUSD?.costmin}
+        </div>
+        <div>
+          Kraken ticker information(XBTUSD):{" "}
+          {krakenTickerInformation?.XXBTZUSD?.a[0]},{" "}
+          {krakenTickerInformation?.XXBTZUSD?.a[1]},{" "}
+          {krakenTickerInformation?.XXBTZUSD?.a[2]}
+        </div>
       </header>
     </div>
   )
