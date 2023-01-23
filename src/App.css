@@ -12,3 +12,13 @@
   font-size: calc(10px + 2vmin);
   color: white;
 }
+
+.Accordion-container {
+  width: 80%;
+}
+
+.Accordion {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+}
