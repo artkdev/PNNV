@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react"
 import { CoinType, OptionsType } from "../../pages/Home/types"
 import { SInputArea } from "./styles"
-import { InputArreaPropsType } from "./types"
+import { InputAreaPropsType } from "./types"
 
-export default function InputArea({ coins, currency }: InputArreaPropsType) {
+export default function InputArea({ coins, currency }: InputAreaPropsType) {
   const DEFAULT_VALUE = "1"
   const RESET_VALUE = "0"
 

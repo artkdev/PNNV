@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react"
 import { Link } from "react-router-dom"
-import DetailedInfoArrea from "../../components/DetailedInfoArrea/DetailedInfoArea"
+import DetailedInfoArea from "../../components/DetailedInfoArrea/DetailedInfoArea"
 import InputArea from "../../components/InputArea/InputArea"
 import { SHome } from "./styles"
 import { OptionsType } from "./types"
@@ -37,7 +37,7 @@ export default function Home() {
   return (
     <SHome>
       <InputArea coins={coins} currency={currency} />
-      <DetailedInfoArrea />
+      <DetailedInfoArea />
       <Link to={"/old"}>Go to old design</Link>
     </SHome>
   )
