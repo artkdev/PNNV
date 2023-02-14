@@ -14,7 +14,7 @@ export default function Home() {
   const [currencyInput, setCurrencyInput] = useState<string>("1")
 
   const currency = [
-    { name: "USDT", symb: "$" },
+    { name: "USDT", symb: "$" }
     // { name: "EUR", symb: "€" },
     // { name: "GBP", symb: "£" },
   ]
@@ -22,9 +22,7 @@ export default function Home() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch(
-          "https://j3tizqwiqb.execute-api.us-east-1.amazonaws.com/prod/getsymbols"
-        )
+        const response = await fetch("https://j3tizqwiqb.execute-api.us-east-1.amazonaws.com/prod/getsymbols")
         const data = await response.json()
         const mappedData = data.map((d: any) => {
           return { value: d.Symbol, label: d.Name }
@@ -85,10 +83,8 @@ export default function Home() {
           className="coin"
           onChange={(e: React.ChangeEvent<HTMLSelectElement>) => {
             handleCoinChange(e.target.value)
-          }}
-        >
-          {coins &&
-            coins.map((coin) => <option key={coin.value}>{coin.label}</option>)}
+          }}>
+          {coins && coins.map((coin) => <option key={coin.value}>{coin.label}</option>)}
         </select>{" "}
         ={" "}
         <input
@@ -103,8 +99,7 @@ export default function Home() {
           className="currency"
           onChange={(e: React.ChangeEvent<HTMLSelectElement>) => {
             setCurrentCurrency(e.target.value)
-          }}
-        >
+          }}>
           {currency.map((cur) => (
             <option key={cur.name}>{cur.name}</option>
           ))}
