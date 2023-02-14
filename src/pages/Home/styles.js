@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import styled from "styled-components"
 
 export const SHome = styled.div`
   width: 100%;
@@ -155,4 +155,4 @@ export const SHome = styled.div`
       }
     }
   }
-`;
+`
