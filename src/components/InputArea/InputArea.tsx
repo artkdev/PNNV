@@ -46,37 +46,29 @@ export default function InputArea({ coins, currency }: InputAreaPropsType) {
   //    }
 
   const handleCoinInput = (value: string, _price?: number) => {
-    if (!value) {
-      setCoinInput(DEFAULT_VALUE)
-      setCurrencyInput((_price ? _price : price).toString())
-      return
-    }
-    if (parseFloat(value) <= 0) {
-      setCoinInput(RESET_VALUE)
-      setCurrencyInput(RESET_VALUE)
-      return
+    let _coinInput = value ? value : DEFAULT_VALUE
+    let _currencyInput = (parseFloat(_coinInput) * (_price ? _price : price)).toString()
+
+    if (value && parseFloat(value) <= 0) {
+      _coinInput = RESET_VALUE
+      _currencyInput = RESET_VALUE
     }
 
-    setCoinInput(value)
-    let cost = parseFloat(value) * (_price ? _price : price)
-    setCurrencyInput(cost.toString())
+    setCoinInput(_coinInput)
+    setCurrencyInput(_currencyInput)
   }
 
   const handlePriceInput = (value: string, _price?: number) => {
-    if (!value) {
-      setCurrencyInput(DEFAULT_VALUE)
-      let coins = parseFloat(DEFAULT_VALUE) / (_price ? _price : price)
-      setCoinInput(coins.toString())
-      return
+    let _currencyInput = value ? value : DEFAULT_VALUE
+    let _coinInput = (parseFloat(_currencyInput) / (_price ? _price : price)).toString()
+
+    if (value && parseFloat(value) <= 0) {
+      _currencyInput = RESET_VALUE
+      _coinInput = RESET_VALUE
     }
-    if (parseFloat(value) <= 0) {
-      setCoinInput(RESET_VALUE)
-      setCurrencyInput(RESET_VALUE)
-      return
-    }
-    setCurrencyInput(value)
-    let coins = parseFloat(value) / (_price ? _price : price)
-    setCoinInput(coins.toString())
+
+    setCurrencyInput(_currencyInput)
+    setCoinInput(_coinInput)
   }
 
   return (
