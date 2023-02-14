@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react"
 import { Link } from "react-router-dom"
-import DetailedInfoArea from "../../components/DetailedInfoArrea/DetailedInfoArea"
+import DetailedInfoArea from "../../components/DetailedInfoArea/DetailedInfoArea"
 import InputArea from "../../components/InputArea/InputArea"
 import { SHome } from "./styles"
 import { OptionsType } from "./types"
