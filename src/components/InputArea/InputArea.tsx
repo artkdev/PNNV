@@ -1,9 +1,12 @@
 import { useEffect, useState } from "react"
 import { CoinType, OptionsType } from "../../pages/Home/types"
-import { SInputArrea } from "./styles"
+import { SInputArea } from "./styles"
 import { InputArreaPropsType } from "./types"
 
-export default function InputArrea({ coins, currency }: InputArreaPropsType) {
+export default function InputArea({ coins, currency }: InputArreaPropsType) {
+  const DEFAULT_VALUE = "1"
+  const RESET_VALUE = "0"
+
   const [coinInput, setCoinInput] = useState<string>("1")
   const [currencyInput, setCurrencyInput] = useState<string>("1")
   const [price, setPrice] = useState<number>(0)
@@ -44,13 +47,13 @@ export default function InputArrea({ coins, currency }: InputArreaPropsType) {
 
   const handleCoinInput = (value: string, _price?: number) => {
     if (!value) {
-      setCoinInput("1")
+      setCoinInput(DEFAULT_VALUE)
       setCurrencyInput((_price ? _price : price).toString())
       return
     }
     if (parseFloat(value) <= 0) {
-      setCoinInput("0")
-      setCurrencyInput("0")
+      setCoinInput(RESET_VALUE)
+      setCurrencyInput(RESET_VALUE)
       return
     }
 
@@ -61,14 +64,14 @@ export default function InputArrea({ coins, currency }: InputArreaPropsType) {
 
   const handlePriceInput = (value: string, _price?: number) => {
     if (!value) {
-      setCurrencyInput("1")
-      let coins = parseFloat("1") / (_price ? _price : price)
+      setCurrencyInput(DEFAULT_VALUE)
+      let coins = parseFloat(DEFAULT_VALUE) / (_price ? _price : price)
       setCoinInput(coins.toString())
       return
     }
     if (parseFloat(value) <= 0) {
-      setCoinInput("0")
-      setCurrencyInput("0")
+      setCoinInput(RESET_VALUE)
+      setCurrencyInput(RESET_VALUE)
       return
     }
     setCurrencyInput(value)
@@ -77,10 +80,10 @@ export default function InputArrea({ coins, currency }: InputArreaPropsType) {
   }
 
   return (
-    <SInputArrea>
+    <SInputArea>
       <input
-        className="datainput"
-        type={"number"}
+        className="dataInput"
+        type="number"
         name="coininput"
         id="coininput"
         value={coinInput}
@@ -95,8 +98,8 @@ export default function InputArrea({ coins, currency }: InputArreaPropsType) {
       </select>{" "}
       ={" "}
       <input
-        className="datainput"
-        type={"number"}
+        className="dataInput"
+        type="number"
         name="priceinput"
         id="priceinput"
         value={currencyInput}
@@ -112,6 +115,6 @@ export default function InputArrea({ coins, currency }: InputArreaPropsType) {
           <option key={cur.name}>{cur.name}</option>
         ))}
       </select>
-    </SInputArrea>
+    </SInputArea>
   )
 }

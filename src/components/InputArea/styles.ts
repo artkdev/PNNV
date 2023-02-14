@@ -1,6 +1,6 @@
 import styled from "styled-components"
 
-export const SInputArrea = styled.div`
+export const SInputArea = styled.div`
   width: 100%;
   max-width: 900px;
   min-width: 750px;
@@ -11,7 +11,7 @@ export const SInputArrea = styled.div`
   font-size: 48px;
   font-weight: 300;
   margin: 0 auto;
-  .datainput {
+  .dataInput {
     width: 100%;
     min-width: 150px;
     height: 75px;

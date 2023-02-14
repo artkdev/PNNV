@@ -1,6 +1,6 @@
 import styled from "styled-components"
 
-export const SDetailedInfoArrea = styled.div`
+export const SDetailedInfoArea = styled.div`
   width: 100%;
   max-width: 900px;
   min-width: 750px;
@@ -13,58 +13,62 @@ export const SDetailedInfoArrea = styled.div`
   padding: 16px;
   border: 1px solid rgb(196, 205, 213);
 
-  .heading {
-    display: flex;
-    justify-content: space-between;
-    border-bottom: 2px solid lightgrey;
-    padding-bottom: 20px;
-    .coin {
-      display: flex;
-      gap: 30px;
-      align-items: center;
-      img {
-        height: 50px;
-      }
-      .name {
-        font-family: Lato, sans-serif;
-        font-size: 32px;
-        font-weight: 600;
-      }
-    }
-    .price {
-      display: flex;
 
-      align-items: center;
-      .symbol {
-        margin-right: 5px;
-        font-family: Lato, sans-serif;
-        font-size: 38px;
-        font-weight: 300;
-      }
-      .value {
-        margin-right: 10px;
-        font-family: Lato, sans-serif;
-        font-size: 38px;
-        font-weight: 300;
-      }
-      .delta {
-        padding: 5px;
-        border-radius: 5px;
-        font-family: Lato, sans-serif;
-        font-size: 12px;
-        font-weight: 300;
-        color: white;
-      }
-      .positive {
-        background-color: green;
-      }
-      .negative {
-        background-color: red;
-      }
+`
+
+export const DetailedInfoAreaHeading = styled.div`
+  display: flex;
+  justify-content: space-between;
+  border-bottom: 2px solid lightgrey;
+  padding-bottom: 20px;
+  .coin {
+    display: flex;
+    gap: 30px;
+    align-items: center;
+    img {
+      height: 50px;
+    }
+    .name {
+      font-family: Lato, sans-serif;
+      font-size: 32px;
+      font-weight: 600;
     }
   }
-  .infoBody {
-    width: 100%;
+  .price {
+    display: flex;
+
+    align-items: center;
+    .symbol {
+      margin-right: 5px;
+      font-family: Lato, sans-serif;
+      font-size: 38px;
+      font-weight: 300;
+    }
+    .value {
+      margin-right: 10px;
+      font-family: Lato, sans-serif;
+      font-size: 38px;
+      font-weight: 300;
+    }
+    .delta {
+      padding: 5px;
+      border-radius: 5px;
+      font-family: Lato, sans-serif;
+      font-size: 12px;
+      font-weight: 300;
+      color: white;
+    }
+    .positive {
+      background-color: green;
+    }
+    .negative {
+      background-color: red;
+    }
+  }
+`
+
+export const DetailedInfoAreaBody = styled.table`
+ width: 100%;
     margin-top: 20px;
     tbody {
       tr {
@@ -102,5 +106,4 @@ export const SDetailedInfoArrea = styled.div`
         }
       }
     }
-  }
 `

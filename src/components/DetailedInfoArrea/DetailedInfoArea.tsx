@@ -1,10 +1,10 @@
 import React from "react"
-import { SDetailedInfoArrea } from "./styles"
+import { DetailedInfoAreaBody, DetailedInfoAreaHeading, SDetailedInfoArea } from "./styles"
 
-export default function DetailedInfoArrea() {
+export default function DetailedInfoArea() {
   return (
-    <SDetailedInfoArrea>
-      <div className="heading">
+    <SDetailedInfoArea>
+      <DetailedInfoAreaHeading>
         <div className="coin">
           <img src={"blank"} alt="" />
           <h1 className="name">{"coinName"}</h1>
@@ -14,8 +14,8 @@ export default function DetailedInfoArrea() {
           <div className="value">{"coinPrice"}</div>
           <div className={"blank" ? "delta positive" : "delta negative"}>{"delta %"}</div>
         </div>
-      </div>
-      <table className="infoBody">
+      </DetailedInfoAreaHeading>
+      <DetailedInfoAreaBody>
         <tbody>
           <tr>
             <td>
@@ -52,7 +52,7 @@ export default function DetailedInfoArrea() {
             </td>
           </tr>
         </tbody>
-      </table>
-    </SDetailedInfoArrea>
+      </DetailedInfoAreaBody>
+    </SDetailedInfoArea>
   )
 }
