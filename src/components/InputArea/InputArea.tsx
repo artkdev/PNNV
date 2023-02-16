@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react"
-import { CoinType, OptionsType } from "../../pages/Home/types"
+import { CurrenciesType, CoinsType } from "../../pages/Home/types"
 import { SInputArea, StyledInput, StyledSelect } from "./styles"
 import { InputAreaPropsType } from "./types"
 
-export default function InputArea({ coins, currency }: InputAreaPropsType) {
+export default function InputArea({ coins, currencies }: InputAreaPropsType) {
   const DEFAULT_VALUE = "1"
   const RESET_VALUE = "0"
 
@@ -78,7 +78,7 @@ export default function InputArea({ coins, currency }: InputAreaPropsType) {
         onChange={(e: React.ChangeEvent<HTMLSelectElement>) => {
           handleCoinChange(e.target.value)
         }}>
-        {coins && coins.map((coin: OptionsType) => <option key={coin.value}>{coin.label}</option>)}
+        {coins && coins.map((coin: CoinsType) => <option key={coin.value}>{coin.label}</option>)}
       </StyledSelect>
       =
       <StyledInput type="number" value={currencyInput} onChange={(e) => handlePriceInput(e.target.value)} />
@@ -88,7 +88,7 @@ export default function InputArea({ coins, currency }: InputAreaPropsType) {
         //   setCurrentCurrency(e.target.value)
         // }}
       >
-        {currency.map((cur: CoinType) => (
+        {currencies?.map((cur: CurrenciesType) => (
           <option key={cur.name}>{cur.name}</option>
         ))}
       </StyledSelect>

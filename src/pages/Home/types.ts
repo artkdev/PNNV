@@ -1,9 +1,9 @@
-export type CoinType = {
+export type CurrenciesType = {
   symbol: string
   name: string
 }
 
-export type OptionsType = {
+export type CoinsType = {
   value: string
   label: string
 }
