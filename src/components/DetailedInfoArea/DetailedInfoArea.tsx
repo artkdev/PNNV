@@ -1,54 +1,65 @@
 import React from "react"
-import { DetailedInfoAreaBody, DetailedInfoAreaHeading, SDetailedInfoArea } from "./styles"
+import {
+  Coin,
+  Delta,
+  DetailedInfoAreaBody,
+  DetailedInfoAreaHeading,
+  Price,
+  Symbol,
+  SDetailedInfoArea,
+  Value,
+  DetailedHead,
+  DetailedFoot
+} from "./styles"
 
 export default function DetailedInfoArea() {
   return (
     <SDetailedInfoArea>
       <DetailedInfoAreaHeading>
-        <div className="coin">
+        <Coin>
           <img src={"blank"} alt="" />
           <h1 className="name">{"coinName"}</h1>
-        </div>
-        <div className="price">
-          <p className="symbol">{"currencySymbol"}</p>
-          <div className="value">{"coinPrice"}</div>
-          <div className={"blank" ? "delta positive" : "delta negative"}>{"delta %"}</div>
-        </div>
+        </Coin>
+        <Price>
+          <Symbol>{"currencySymbol"}</Symbol>
+          <Value>{"coinPrice"}</Value>
+          <Delta theme={{ delta: "blank" ? "delta positive" : "delta negative" }}>{"delta %"}</Delta>
+        </Price>
       </DetailedInfoAreaHeading>
       <DetailedInfoAreaBody>
         <tbody>
           <tr>
             <td>
-              <div className="head">
-                Market Cap <span className={"blank" ? "delta positive" : "delta negative"}>{"delta %"}</span>{" "}
-              </div>
-              <div className="bot">{"$ marketCap"}</div>
+              <DetailedHead>
+                Market Cap<Delta theme={{ delta: "blank" ? "delta positive" : "delta negative" }}>{"delta %"}</Delta>
+              </DetailedHead>
+              <DetailedFoot>{"$ marketCap"}</DetailedFoot>
             </td>
             <td>
-              <div className="head">24H Volume</div>
-              <div className="bot">{"$ 24hVolume"}</div>
+              <DetailedHead>24H Volume</DetailedHead>
+              <DetailedFoot>{"$ 24hVolume"}</DetailedFoot>
             </td>
             <td>
-              <div className="head">Circulating Supply</div>
-              <div className="bot">
+              <DetailedHead>Circulating Supply</DetailedHead>
+              <DetailedFoot>
                 {"circulatingSupply"} {"coinSymbol"}
-              </div>
+              </DetailedFoot>
             </td>
           </tr>
           <tr>
             <td>
-              <div className="head">Volume/Market Cap</div>
-              <div className="bot">{"volume/marketCap"}</div>
+              <DetailedHead>Volume/Market Cap</DetailedHead>
+              <DetailedFoot>{"volume/marketCap"}</DetailedFoot>
             </td>
             <td>
-              <div className="head">Max Supply</div>
-              <div className="bot">{"maxSupply"}</div>
+              <DetailedHead>Max Supply</DetailedHead>
+              <DetailedFoot>{"maxSupply"}</DetailedFoot>
             </td>
             <td>
-              <div className="head">Exchanges</div>
-              <div className="bot">
+              <DetailedHead>Exchanges</DetailedHead>
+              <DetailedFoot>
                 <img src="" alt="" />
-              </div>
+              </DetailedFoot>
             </td>
           </tr>
         </tbody>
