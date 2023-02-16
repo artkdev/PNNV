@@ -13,15 +13,15 @@ export default function InputArea({ coins, currencies }: InputAreaPropsType) {
 
   useEffect(() => {
     if (!coins) return
-    handleCoinChange(coins[0].label)
+    handleCoinChange(coins[0].name)
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [coins])
 
   const handleCoinChange = async (newValue: string) => {
-    const pair = coins?.find((c) => c.label === newValue)
+    const pair = coins?.find((c) => c.name === newValue)
     try {
       const response = await fetch(
-        `https://j3tizqwiqb.execute-api.us-east-1.amazonaws.com/prod/getprice?symbol=${pair?.value}`
+        `https://j3tizqwiqb.execute-api.us-east-1.amazonaws.com/prod/getprice?symbol=${pair?.symbol}`
       )
       const data = await response.json()
       setPrice(data[0]?.Price)
@@ -31,19 +31,9 @@ export default function InputArea({ coins, currencies }: InputAreaPropsType) {
     }
   }
 
-  //    const handleCurrencyChange = async (newValue: string) => {
-  //      const pair = coins?.find((c) => c.label === newValue)
-  //      try {
-  //        const response = await fetch(
-  //          `https://j3tizqwiqb.execute-api.us-east-1.amazonaws.com/prod/getprice?symbol=${pair?.value}`
-  //        )
-  //        const data = await response.json()
-  //        setPrice(data[0]?.Price)
-  //        handleCoinInput(coinInput, data[0]?.Price)
-  //      } catch (error) {
-  //        console.log(error)
-  //      }
-  //    }
+  const handleCurrencyChange = async (newValue: string) => {
+    convert("USD", newValue)
+  }
 
   const handleCoinInput = (value: string, _price?: number) => {
     let _coinInput = value ? value : DEFAULT_VALUE
@@ -71,6 +61,25 @@ export default function InputArea({ coins, currencies }: InputAreaPropsType) {
     setCoinInput(_coinInput)
   }
 
+  const convert = async (prevCurrency: string, newCurrency: string) => {
+    var myHeaders = new Headers()
+    myHeaders.append("apikey", "t39onDuMTiuWKvwmvZ63ScfFPjU9ITJ8")
+
+    let requestOptions: RequestInit = {
+      method: "GET",
+      redirect: "follow",
+      headers: myHeaders
+    }
+
+    const data = await fetch(
+      `https://api.apilayer.com/exchangerates_data/convert?to=${newCurrency}&from=${prevCurrency}&amount=${currencyInput}`,
+      requestOptions
+    )
+
+    const dataJSON = await data.json()
+    setCurrencyInput(dataJSON.result)
+  }
+
   return (
     <SInputArea>
       <StyledInput type="number" value={coinInput} onChange={(e) => handleCoinInput(e.target.value)} />
@@ -78,18 +87,17 @@ export default function InputArea({ coins, currencies }: InputAreaPropsType) {
         onChange={(e: React.ChangeEvent<HTMLSelectElement>) => {
           handleCoinChange(e.target.value)
         }}>
-        {coins && coins.map((coin: CoinsType) => <option key={coin.value}>{coin.label}</option>)}
+        {coins && coins.map((coin: CoinsType) => <option key={coin.symbol}>{coin.name}</option>)}
       </StyledSelect>
       =
       <StyledInput type="number" value={currencyInput} onChange={(e) => handlePriceInput(e.target.value)} />
       <StyledSelect
         className="currency"
-        // onChange={(e: React.ChangeEvent<HTMLSelectElement>) => {
-        //   setCurrentCurrency(e.target.value)
-        // }}
-      >
-        {currencies?.map((cur: CurrenciesType) => (
-          <option key={cur.name}>{cur.name}</option>
+        onChange={(e: React.ChangeEvent<HTMLSelectElement>) => {
+          handleCurrencyChange(e.target.value)
+        }}>
+        {currencies?.map((currency: CurrenciesType) => (
+          <option key={currency.currency}>{currency.currency}</option>
         ))}
       </StyledSelect>
     </SInputArea>

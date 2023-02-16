@@ -14,15 +14,21 @@ export default function Home() {
       try {
         const responseCoins = await fetch("https://j3tizqwiqb.execute-api.us-east-1.amazonaws.com/prod/getsymbols")
         const responseCurrencies = await fetch(
-          "https://j3tizqwiqb.execute-api.us-east-1.amazonaws.com/prod/getCurrencies"
+          "https://j3tizqwiqb.execute-api.us-east-1.amazonaws.com/prod/getcurrencies"
         )
+
         const dataCoins = await responseCoins.json()
         const dataCurrencies = await responseCurrencies.json()
+
         const mappedCoinsData = dataCoins.map((d: any) => {
-          return { value: d.Symbol, label: d.Name }
+          return { symbol: d.Symbol, name: d.Name }
         })
+        const mappedCurrencyData = dataCurrencies.map((d: any) => {
+          return { currency: d.Currency }
+        })
+
         setCoins(mappedCoinsData)
-        setCurrencies(dataCurrencies)
+        setCurrencies(mappedCurrencyData)
       } catch (error) {
         console.log(error)
       }
