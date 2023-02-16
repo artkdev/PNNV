@@ -12,8 +12,6 @@ export const SDetailedInfoArea = styled.div`
   box-shadow: none;
   padding: 16px;
   border: 1px solid rgb(196, 205, 213);
-
-
 `
 
 export const DetailedInfoAreaHeading = styled.div`
@@ -21,89 +19,73 @@ export const DetailedInfoAreaHeading = styled.div`
   justify-content: space-between;
   border-bottom: 2px solid lightgrey;
   padding-bottom: 20px;
-  .coin {
-    display: flex;
-    gap: 30px;
-    align-items: center;
-    img {
-      height: 50px;
-    }
-    .name {
-      font-family: Lato, sans-serif;
-      font-size: 32px;
-      font-weight: 600;
-    }
-  }
-  .price {
-    display: flex;
+`
 
-    align-items: center;
-    .symbol {
-      margin-right: 5px;
-      font-family: Lato, sans-serif;
-      font-size: 38px;
-      font-weight: 300;
-    }
-    .value {
-      margin-right: 10px;
-      font-family: Lato, sans-serif;
-      font-size: 38px;
-      font-weight: 300;
-    }
-    .delta {
-      padding: 5px;
-      border-radius: 5px;
-      font-family: Lato, sans-serif;
-      font-size: 12px;
-      font-weight: 300;
-      color: white;
-    }
-    .positive {
-      background-color: green;
-    }
-    .negative {
-      background-color: red;
-    }
-  }
+export const Coin = styled.div`
+  display: flex;
+  gap: 30px;
+  align-items: center;
+`
+
+export const CoinImg = styled.img`
+  height: 50px;
+`
+export const Name = styled.h1`
+  font-family: "Lato", sans-serif;
+  font-size: 32px;
+  font-weight: 600;
+`
+
+export const Price = styled.div`
+  display: flex;
+  align-items: center;
+`
+
+export const Symbol = styled.p`
+  margin-right: 5px;
+  font-family: "Lato", sans-serif;
+  font-size: 38px;
+  font-weight: 300;
+`
+
+export const Value = styled.div`
+  margin-right: 10px;
+  font-family: Lato, sans-serif;
+  font-size: 38px;
+  font-weight: 300;
+`
+
+export const Delta = styled.div`
+  padding: 5px;
+  border-radius: 5px;
+  font-family: Lato, sans-serif;
+  font-size: 12px;
+  font-weight: 300;
+  color: white;
+  background-color: ${(props) => (props.theme.isPositive ? "green" : "red")};
 `
 
 export const DetailedInfoAreaBody = styled.table`
- width: 100%;
-    margin-top: 20px;
-    tbody {
-      tr {
-        td {
-          height: 50px;
-          text-align: start;
-          padding: 20px 0;
+  width: 100%;
+  margin-top: 20px;
+`
 
-          .head {
-            font-family: Lato, sans-serif;
-            font-size: 14px;
-            font-weight: 600;
-            color: rgb(99, 115, 129);
-            .delta {
-              padding: 5px;
-              border-radius: 5px;
-              font-family: Lato, sans-serif;
-              font-size: 12px;
-              font-weight: 600;
-            }
-            .positive {
-              color: green;
-            }
-            .negative {
-              color: red;
-            }
-          }
-          .bot {
-            margin-top: 15px;
-            font-family: Lato, sans-serif;
-            font-size: 21px;
-            font-weight: 500;
-            text-transform: uppercase;
-          }
-        }
-      }
-    }
+export const DetailedTd = styled.tr`
+  height: 50px;
+  text-align: start;
+  padding: 20px 0;
+`
+
+export const DetailedHead = styled.div`
+  font-family: "Lato", sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  color: rgb(99, 115, 129);
+`
+export const DetailedFoot = styled.div`
+  margin-top: 15px;
+  font-family: Lato, sans-serif;
+  font-size: 21px;
+  font-weight: 500;
+  text-transform: uppercase;
 `
