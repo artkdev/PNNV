@@ -35,6 +35,7 @@ export default function InputArea({ coins, currencies }: InputAreaPropsType) {
 
   const handleCurrencyChange = async (newValue: string) => {
     convert(newValue)
+    setOldCurrency(newValue)
   }
 
   const handleCoinInput = (value: string, _price?: number) => {
@@ -64,26 +65,26 @@ export default function InputArea({ coins, currencies }: InputAreaPropsType) {
   }
 
   const convert = async (newCurrency: string) => {
-    var myHeaders = new Headers()
-    myHeaders.append("apikey", "t39onDuMTiuWKvwmvZ63ScfFPjU9ITJ8")
+    try {
+      var myHeaders = new Headers()
+      myHeaders.append("apikey", "t39onDuMTiuWKvwmvZ63ScfFPjU9ITJ8")
 
-    let requestOptions: RequestInit = {
-      method: "GET",
-      redirect: "follow",
-      headers: myHeaders
+      let requestOptions: RequestInit = {
+        method: "GET",
+        redirect: "follow",
+        headers: myHeaders
+      }
+
+      const data = await fetch(
+        `https://api.apilayer.com/exchangerates_data/convert?to=${newCurrency}&from=${oldCurrency}&amount=${currencyInput}`,
+        requestOptions
+      )
+
+      const dataJSON = await data.json()
+      setCurrencyInput(dataJSON.result)
+    } catch (err) {
+      console.error(err)
     }
-
-    const data = await fetch(
-      `https://api.apilayer.com/exchangerates_data/convert?to=${newCurrency}&from=${oldCurrency}&amount=${currencyInput}`,
-      requestOptions
-    )
-    console.log("🚀 ~ file: InputArea.tsx:79 ~ convert ~ newCurrency", newCurrency)
-    console.log("🚀 ~ file: InputArea.tsx:79 ~ convert ~ oldCurrency", oldCurrency)
-    console.log("🚀 ~ file: InputArea.tsx:79 ~ convert ~ currencyInput", currencyInput)
-
-    const dataJSON = await data.json()
-    setCurrencyInput(dataJSON.result)
-    setOldCurrency(newCurrency)
   }
 
   return (
