@@ -3,29 +3,32 @@ import { Link } from "react-router-dom"
 import DetailedInfoArea from "../../components/DetailedInfoArea/DetailedInfoArea"
 import InputArea from "../../components/InputArea/InputArea"
 import { SHome } from "./styles"
-import { OptionsType } from "./types"
+import { CurrenciesType, CoinsType } from "./types"
 
 export default function Home() {
-  // const [exchangeData, setExchangeData] = useState<any>()
-  // const [market, setMarket] = useState<any>()
-  const [coins, setCoins] = useState<OptionsType[]>()
-
-  const currency = [
-    { name: "USDT", symbol: "$" }
-    // ,
-    // { name: "EUR", symbol: "€" },
-    // { name: "GBP", symbol: "£" }
-  ]
+  const [coins, setCoins] = useState<CoinsType[]>()
+  const [currencies, setCurrencies] = useState<CurrenciesType[]>()
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch("https://j3tizqwiqb.execute-api.us-east-1.amazonaws.com/prod/getsymbols")
-        const data = await response.json()
-        const mappedData = data.map((d: any) => {
-          return { value: d.Symbol, label: d.Name }
+        const responseCoins = await fetch("https://j3tizqwiqb.execute-api.us-east-1.amazonaws.com/prod/getsymbols")
+        const responseCurrencies = await fetch(
+          "https://j3tizqwiqb.execute-api.us-east-1.amazonaws.com/prod/getcurrencies"
+        )
+
+        const dataCoins = await responseCoins.json()
+        const dataCurrencies = await responseCurrencies.json()
+
+        const mappedCoinsData = dataCoins.map((d: any) => {
+          return { symbol: d.Symbol, name: d.Name }
         })
-        setCoins(mappedData)
+        const mappedCurrencyData = dataCurrencies.map((d: any) => {
+          return { currency: d.Currency }
+        })
+
+        setCoins(mappedCoinsData)
+        setCurrencies(mappedCurrencyData)
       } catch (error) {
         console.log(error)
       }
@@ -36,7 +39,7 @@ export default function Home() {
 
   return (
     <SHome>
-      <InputArea coins={coins} currency={currency} />
+      <InputArea coins={coins} currencies={currencies} />
       <DetailedInfoArea />
       <Link to={"/old"}>Go to old design</Link>
     </SHome>
