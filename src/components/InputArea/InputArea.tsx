@@ -3,13 +3,14 @@ import { CurrenciesType, CoinsType } from "../../pages/Home/types"
 import { SInputArea, StyledInput, StyledSelect } from "./styles"
 import { InputAreaPropsType } from "./types"
 
-export default function InputArea({ coins, currencies }: InputAreaPropsType) {
+export default function InputArea({ coins, currencies, price, setPrice, setCurrentCoin }: InputAreaPropsType) {
   const DEFAULT_VALUE = "1"
   const RESET_VALUE = "0"
 
   const [coinInput, setCoinInput] = useState<string>("1")
   const [currencyInput, setCurrencyInput] = useState<string>("1")
-  const [price, setPrice] = useState<number>(0)
+
+  const [oldCurrency, setOldCurrency] = useState<string>("USD")
 
   useEffect(() => {
     if (!coins) return
@@ -21,18 +22,20 @@ export default function InputArea({ coins, currencies }: InputAreaPropsType) {
     const pair = coins?.find((c) => c.name === newValue)
     try {
       const response = await fetch(
-        `https://j3tizqwiqb.execute-api.us-east-1.amazonaws.com/prod/getprice?symbol=${pair?.symbol}`
+        `https://j3tizqwiqb.execute-api.us-east-1.amazonaws.com/prod/getprice?symbol='${pair?.symbol}'`
       )
       const data = await response.json()
       setPrice(data[0]?.Price)
       handleCoinInput(coinInput, data[0]?.Price)
+      setCurrentCoin(pair)
     } catch (error) {
       console.log(error)
     }
   }
 
   const handleCurrencyChange = async (newValue: string) => {
-    convert("USD", newValue)
+    convert(newValue)
+    setOldCurrency(newValue)
   }
 
   const handleCoinInput = (value: string, _price?: number) => {
@@ -61,23 +64,27 @@ export default function InputArea({ coins, currencies }: InputAreaPropsType) {
     setCoinInput(_coinInput)
   }
 
-  const convert = async (prevCurrency: string, newCurrency: string) => {
-    var myHeaders = new Headers()
-    myHeaders.append("apikey", "t39onDuMTiuWKvwmvZ63ScfFPjU9ITJ8")
+  const convert = async (newCurrency: string) => {
+    try {
+      var myHeaders = new Headers()
+      myHeaders.append("apikey", "t39onDuMTiuWKvwmvZ63ScfFPjU9ITJ8")
 
-    let requestOptions: RequestInit = {
-      method: "GET",
-      redirect: "follow",
-      headers: myHeaders
+      let requestOptions: RequestInit = {
+        method: "GET",
+        redirect: "follow",
+        headers: myHeaders
+      }
+
+      const data = await fetch(
+        `https://api.apilayer.com/exchangerates_data/convert?to=${newCurrency}&from=${oldCurrency}&amount=${currencyInput}`,
+        requestOptions
+      )
+
+      const dataJSON = await data.json()
+      setCurrencyInput(dataJSON.result)
+    } catch (err) {
+      console.error(err)
     }
-
-    const data = await fetch(
-      `https://api.apilayer.com/exchangerates_data/convert?to=${newCurrency}&from=${prevCurrency}&amount=${currencyInput}`,
-      requestOptions
-    )
-
-    const dataJSON = await data.json()
-    setCurrencyInput(dataJSON.result)
   }
 
   return (
