@@ -62,6 +62,8 @@ export const Delta = styled.div`
   font-size: 12px;
   font-weight: 300;
   color: white;
+  display: flex;
+  gap: 5px;
   background-color: ${(props) => (props.theme.isPositive ? "green" : "red")};
 `
 

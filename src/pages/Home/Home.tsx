@@ -8,6 +8,8 @@ import { CurrenciesType, CoinsType } from "./types"
 export default function Home() {
   const [coins, setCoins] = useState<CoinsType[]>()
   const [currencies, setCurrencies] = useState<CurrenciesType[]>()
+  const [currentCoin, setCurrentCoin] = useState<CoinsType>()
+  const [price, setPrice] = useState<number>(0)
 
   useEffect(() => {
     const fetchData = async () => {
@@ -37,10 +39,21 @@ export default function Home() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
+  useEffect(() => {
+    if (!coins) return
+    setCurrentCoin(coins[0])
+  }, [coins])
+
   return (
     <SHome>
-      <InputArea coins={coins} currencies={currencies} />
-      <DetailedInfoArea />
+      <InputArea
+        coins={coins}
+        currencies={currencies}
+        price={price}
+        setPrice={setPrice}
+        setCurrentCoin={setCurrentCoin}
+      />
+      <DetailedInfoArea currentCoin={currentCoin} price={price} />
       <Link to={"/old"}>Go to old design</Link>
     </SHome>
   )

@@ -3,13 +3,12 @@ import { CurrenciesType, CoinsType } from "../../pages/Home/types"
 import { SInputArea, StyledInput, StyledSelect } from "./styles"
 import { InputAreaPropsType } from "./types"
 
-export default function InputArea({ coins, currencies }: InputAreaPropsType) {
+export default function InputArea({ coins, currencies, price, setPrice, setCurrentCoin }: InputAreaPropsType) {
   const DEFAULT_VALUE = "1"
   const RESET_VALUE = "0"
 
   const [coinInput, setCoinInput] = useState<string>("1")
   const [currencyInput, setCurrencyInput] = useState<string>("1")
-  const [price, setPrice] = useState<number>(0)
 
   const [oldCurrency, setOldCurrency] = useState<string>("USD")
 
@@ -23,11 +22,12 @@ export default function InputArea({ coins, currencies }: InputAreaPropsType) {
     const pair = coins?.find((c) => c.name === newValue)
     try {
       const response = await fetch(
-        `https://j3tizqwiqb.execute-api.us-east-1.amazonaws.com/prod/getprice?symbol=${pair?.symbol}`
+        `https://j3tizqwiqb.execute-api.us-east-1.amazonaws.com/prod/getprice?symbol='${pair?.symbol}'`
       )
       const data = await response.json()
       setPrice(data[0]?.Price)
       handleCoinInput(coinInput, data[0]?.Price)
+      setCurrentCoin(pair)
     } catch (error) {
       console.log(error)
     }
