@@ -17,6 +17,9 @@ export default function DetailedInfoArea({ currentCoin, price }: DetailedInfoAre
   const [details, setDetails] = useState<DetailsType>()
   const [deltaPercentage, setDeltaPercentage] = useState<string>()
   const [deltaPositive, setDeltaPositive] = useState<boolean>()
+  const [marketCap, setMarketCap] = useState<number>()
+  const [volumeToMarketCap, setVolumeToMarketCap] = useState<number>()
+  const [circulatingSupply, setCirculatingSupply] = useState<number>()
 
   const hundred = 100
 
@@ -26,7 +29,7 @@ export default function DetailedInfoArea({ currentCoin, price }: DetailedInfoAre
     const fetchData = async () => {
       try {
         const responseDetails = await fetch(
-          `https://j3tizqwiqb.execute-api.us-east-1.amazonaws.com/prod/getdetails?symbol='${currentCoin?.symbol}'`
+          `https://j3tizqwiqb.execute-api.us-east-1.amazonaws.com/prod/getdetails?symbol='${currentCoin?.name}'`
         )
 
         const dataDetails = await responseDetails.json()
@@ -42,11 +45,17 @@ export default function DetailedInfoArea({ currentCoin, price }: DetailedInfoAre
 
   useEffect(() => {
     if (!details) return
-    const changePrice = parseFloat(details.changePrice)
+    const changePrice = parseFloat(details.ChangePrice)
     const oldPrice = price - changePrice
     const delta = ((price - oldPrice) * hundred) / oldPrice
+    const cs = parseFloat(details.Cs)
+    const vol = parseFloat(details.VolValue)
+    const marketCap = cs * price
     setDeltaPositive(delta >= 0)
     setDeltaPercentage(delta.toFixed(2))
+    setMarketCap(marketCap)
+    setVolumeToMarketCap(vol / marketCap)
+    setCirculatingSupply(marketCap / price)
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [details])
 
@@ -67,58 +76,56 @@ export default function DetailedInfoArea({ currentCoin, price }: DetailedInfoAre
         </Price>
       </DetailedInfoAreaHeading>
       <DetailedInfoAreaBody>
-        <tbody>
-          <tr>
-            <td>
-              <DetailedHead>
-                Market Cap<Delta theme={{ delta: "blank" ? "delta positive" : "delta negative" }}>{"delta %"}</Delta>
-              </DetailedHead>
-              <DetailedFoot>{"$ marketCap"}</DetailedFoot>
-            </td>
-            <td>
-              <DetailedHead>24H Volume</DetailedHead>
-              <DetailedFoot>{details && parseFloat(details.volValue).toFixed(1)}</DetailedFoot>
-            </td>
-            <td>
-              <DetailedHead>Circulating Supply</DetailedHead>
-              <DetailedFoot>
-                {"circulatingSupply"} {"coinSymbol"}
-              </DetailedFoot>
-            </td>
-            <td>
-              <DetailedHead>High</DetailedHead>
-              <DetailedFoot>{details?.high}</DetailedFoot>
-            </td>
-            <td>
-              <DetailedHead>Change Price</DetailedHead>
-              <DetailedFoot>{details?.changePrice}</DetailedFoot>
-            </td>
-          </tr>
-          <tr>
-            <td>
-              <DetailedHead>Volume/Market Cap</DetailedHead>
-              <DetailedFoot>{"volume/marketCap"}</DetailedFoot>
-            </td>
-            <td>
-              <DetailedHead>Max Supply</DetailedHead>
-              <DetailedFoot>{"maxSupply"}</DetailedFoot>
-            </td>
-            <td>
-              <DetailedHead>Exchanges</DetailedHead>
-              <DetailedFoot>
-                <img src="" alt="" />
-              </DetailedFoot>
-            </td>
-            <td>
-              <DetailedHead>Low</DetailedHead>
-              <DetailedFoot>{details?.low}</DetailedFoot>
-            </td>
-            <td>
-              <DetailedHead>Change Rate</DetailedHead>
-              <DetailedFoot>{details?.changeRate}</DetailedFoot>
-            </td>
-          </tr>
-        </tbody>
+        {details && (
+          <tbody>
+            <tr>
+              <td>
+                <DetailedHead>Market Cap</DetailedHead>
+                <DetailedFoot>{marketCap?.toFixed(2)}</DetailedFoot>
+              </td>
+              <td>
+                <DetailedHead>24H Volume</DetailedHead>
+                <DetailedFoot>{details && parseFloat(details.VolValue).toFixed(1)}</DetailedFoot>
+              </td>
+              <td>
+                <DetailedHead>Circulating Supply</DetailedHead>
+                <DetailedFoot>{circulatingSupply?.toFixed(2)}</DetailedFoot>
+              </td>
+              <td>
+                <DetailedHead>High</DetailedHead>
+                <DetailedFoot>{details?.High}</DetailedFoot>
+              </td>
+              <td>
+                <DetailedHead>Change Price</DetailedHead>
+                <DetailedFoot>{details?.ChangePrice}</DetailedFoot>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <DetailedHead>Volume/Market Cap</DetailedHead>
+                <DetailedFoot>{volumeToMarketCap?.toFixed(4)}</DetailedFoot>
+              </td>
+              <td>
+                <DetailedHead>Max Supply</DetailedHead>
+                <DetailedFoot>{"maxSupply"}</DetailedFoot>
+              </td>
+              <td>
+                <DetailedHead>Exchanges</DetailedHead>
+                <DetailedFoot>
+                  <img src="" alt="" />
+                </DetailedFoot>
+              </td>
+              <td>
+                <DetailedHead>Low</DetailedHead>
+                <DetailedFoot>{details?.Low}</DetailedFoot>
+              </td>
+              <td>
+                <DetailedHead>Change Rate</DetailedHead>
+                <DetailedFoot>{details?.ChangeRate}</DetailedFoot>
+              </td>
+            </tr>
+          </tbody>
+        )}
       </DetailedInfoAreaBody>
     </SDetailedInfoArea>
   )
