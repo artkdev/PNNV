@@ -2,7 +2,7 @@ import styled from "styled-components"
 
 export const SDetailedInfoArea = styled.div`
   width: 100%;
-  max-width: 900px;
+  max-width: 1200px;
   min-width: 750px;
   margin: 0 auto;
   background-color: rgb(255, 255, 255);
