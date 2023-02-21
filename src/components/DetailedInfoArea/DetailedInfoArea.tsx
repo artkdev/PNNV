@@ -60,7 +60,7 @@ export default function DetailedInfoArea({ currentCoin, price }: DetailedInfoAre
         <Price>
           <Symbol>{currentCoin?.symbol}</Symbol>
           <Value>{price}</Value>
-          <Delta theme={{ isPositive: deltaPositive ? "green" : "red" }}>
+          <Delta theme={{ isPositive: deltaPositive }}>
             {deltaPositive ? <span>▲</span> : <span>▼</span>}
             {deltaPercentage}
           </Delta>
@@ -85,6 +85,14 @@ export default function DetailedInfoArea({ currentCoin, price }: DetailedInfoAre
                 {"circulatingSupply"} {"coinSymbol"}
               </DetailedFoot>
             </td>
+            <td>
+              <DetailedHead>High</DetailedHead>
+              <DetailedFoot>{details?.high}</DetailedFoot>
+            </td>
+            <td>
+              <DetailedHead>Change Price</DetailedHead>
+              <DetailedFoot>{details?.changePrice}</DetailedFoot>
+            </td>
           </tr>
           <tr>
             <td>
@@ -100,6 +108,14 @@ export default function DetailedInfoArea({ currentCoin, price }: DetailedInfoAre
               <DetailedFoot>
                 <img src="" alt="" />
               </DetailedFoot>
+            </td>
+            <td>
+              <DetailedHead>Low</DetailedHead>
+              <DetailedFoot>{details?.low}</DetailedFoot>
+            </td>
+            <td>
+              <DetailedHead>Change Rate</DetailedHead>
+              <DetailedFoot>{details?.changeRate}</DetailedFoot>
             </td>
           </tr>
         </tbody>
