@@ -12,4 +12,5 @@ export type DetailsType = {
   Low: string
   VolValue: string
   Cs: string
+  MaxSupply: string
 }
