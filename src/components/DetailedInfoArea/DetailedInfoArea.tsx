@@ -107,7 +107,7 @@ export default function DetailedInfoArea({ currentCoin, price }: DetailedInfoAre
               </td>
               <td>
                 <DetailedHead>Max Supply</DetailedHead>
-                <DetailedFoot>{"maxSupply"}</DetailedFoot>
+                <DetailedFoot>{details?.MaxSupply}</DetailedFoot>
               </td>
               <td>
                 <DetailedHead>Exchanges</DetailedHead>
