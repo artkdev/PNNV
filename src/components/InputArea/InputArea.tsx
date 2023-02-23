@@ -13,7 +13,7 @@ export default function InputArea({ coins, currencies, price, setPrice, setCurre
   const [oldCurrency, setOldCurrency] = useState<string>("USD")
 
   useEffect(() => {
-    if (!coins) return
+    if (!coins?.length) return
     handleCoinChange(coins[0].name)
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [coins])
@@ -27,7 +27,7 @@ export default function InputArea({ coins, currencies, price, setPrice, setCurre
       const data = await response.json()
       setPrice(data[0]?.Price)
       handleCoinInput(coinInput, data[0]?.Price)
-      setCurrentCoin(pair)
+      pair && setCurrentCoin(pair)
     } catch (error) {
       console.log(error)
     }

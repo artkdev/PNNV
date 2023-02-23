@@ -8,7 +8,7 @@ import { CurrenciesType, CoinsType } from "./types"
 export default function Home() {
   const [coins, setCoins] = useState<CoinsType[]>()
   const [currencies, setCurrencies] = useState<CurrenciesType[]>()
-  const [currentCoin, setCurrentCoin] = useState<CoinsType>()
+  const [currentCoin, setCurrentCoin] = useState<CoinsType>({ symbol: "BNB-USDT", name: "BNB" })
   const [price, setPrice] = useState<number>(0)
 
   useEffect(() => {
@@ -38,11 +38,6 @@ export default function Home() {
     fetchData()
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
-
-  useEffect(() => {
-    if (!coins) return
-    setCurrentCoin(coins[0])
-  }, [coins])
 
   return (
     <SHome>

@@ -81,7 +81,7 @@ export default function DetailedInfoArea({ currentCoin, price }: DetailedInfoAre
             <tr>
               <td>
                 <DetailedHead>Market Cap</DetailedHead>
-                <DetailedFoot>{marketCap?.toFixed(2)}</DetailedFoot>
+                {marketCap && <DetailedFoot>{marketCap?.toFixed(2)}</DetailedFoot>}
               </td>
               <td>
                 <DetailedHead>24H Volume</DetailedHead>
@@ -89,7 +89,7 @@ export default function DetailedInfoArea({ currentCoin, price }: DetailedInfoAre
               </td>
               <td>
                 <DetailedHead>Circulating Supply</DetailedHead>
-                <DetailedFoot>{circulatingSupply?.toFixed(2)}</DetailedFoot>
+                {circulatingSupply && <DetailedFoot>{circulatingSupply?.toFixed(2)}</DetailedFoot>}
               </td>
               <td>
                 <DetailedHead>High</DetailedHead>
@@ -103,7 +103,7 @@ export default function DetailedInfoArea({ currentCoin, price }: DetailedInfoAre
             <tr>
               <td>
                 <DetailedHead>Volume/Market Cap</DetailedHead>
-                <DetailedFoot>{volumeToMarketCap?.toFixed(4)}</DetailedFoot>
+                {marketCap && <DetailedFoot>{volumeToMarketCap?.toFixed(4)}</DetailedFoot>}
               </td>
               <td>
                 <DetailedHead>Max Supply</DetailedHead>
