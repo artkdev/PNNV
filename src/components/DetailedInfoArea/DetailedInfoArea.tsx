@@ -21,8 +21,6 @@ export default function DetailedInfoArea({ currentCoin, price }: DetailedInfoAre
   const [volumeToMarketCap, setVolumeToMarketCap] = useState<number>()
   const [circulatingSupply, setCirculatingSupply] = useState<number>()
 
-  const hundred = 100
-
   useEffect(() => {
     if (!currentCoin) return
 
@@ -45,14 +43,11 @@ export default function DetailedInfoArea({ currentCoin, price }: DetailedInfoAre
 
   useEffect(() => {
     if (!details) return
-    const changePrice = parseFloat(details.ChangePrice)
-    const oldPrice = price - changePrice
-    const delta = ((price - oldPrice) * hundred) / oldPrice
     const cs = parseFloat(details.Cs)
     const vol = parseFloat(details.VolValue)
     const marketCap = cs * price
-    setDeltaPositive(delta >= 0)
-    setDeltaPercentage(delta.toFixed(2))
+    setDeltaPositive(parseFloat(details.ChangePricePercent) >= 0)
+    setDeltaPercentage(details.ChangePricePercent)
     setMarketCap(marketCap)
     setVolumeToMarketCap(vol / marketCap)
     setCirculatingSupply(marketCap / price)
@@ -118,10 +113,6 @@ export default function DetailedInfoArea({ currentCoin, price }: DetailedInfoAre
               <td>
                 <DetailedHead>Low</DetailedHead>
                 <DetailedFoot>{details?.Low}</DetailedFoot>
-              </td>
-              <td>
-                <DetailedHead>Change Rate</DetailedHead>
-                <DetailedFoot>{details?.ChangeRate}</DetailedFoot>
               </td>
             </tr>
           </tbody>

@@ -6,8 +6,8 @@ export type DetailedInfoAreaType = {
 }
 
 export type DetailsType = {
-  ChangeRate: string
   ChangePrice: string
+  ChangePricePercent: string
   High: string
   Low: string
   VolValue: string
