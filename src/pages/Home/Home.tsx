@@ -2,12 +2,13 @@ import React, { useState, useEffect } from "react"
 import DetailedInfoArea from "../../components/DetailedInfoArea/DetailedInfoArea"
 import InputArea from "../../components/InputArea/InputArea"
 import { SHome } from "./styles"
-import { CurrenciesType, CoinsType } from "./types"
+import { CurrenciesType, CoinsType, SymbolDetailsType } from "./types"
 
 export default function Home() {
   const [coins, setCoins] = useState<CoinsType[]>()
   const [currencies, setCurrencies] = useState<CurrenciesType[]>()
   const [currentCoin, setCurrentCoin] = useState<CoinsType>()
+  const [symbolDetails, setSymbolDetails] = useState<SymbolDetailsType[]>()
   const [price, setPrice] = useState<number>(0)
 
   useEffect(() => {
@@ -27,9 +28,13 @@ export default function Home() {
         const mappedCurrencyData = dataCurrencies.map((d: any) => {
           return { label: d.Currency, value: d.Currency }
         })
+        const mappedSymbolDetails = dataCoins.map((d: any) => {
+          return { name: d.Name, fullName: d.FullName, logo: d.Logo }
+        })
 
         setCoins(mappedCoinsData)
         setCurrencies(mappedCurrencyData)
+        setSymbolDetails(mappedSymbolDetails)
       } catch (error) {
         console.log(error)
       }
@@ -47,7 +52,7 @@ export default function Home() {
         setPrice={setPrice}
         setCurrentCoin={setCurrentCoin}
       />
-      <DetailedInfoArea currentCoin={currentCoin} price={price} />
+      <DetailedInfoArea currentCoin={currentCoin} price={price} symbolDetails={symbolDetails} />
     </SHome>
   )
 }
