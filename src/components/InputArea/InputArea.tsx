@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react"
-import { CurrenciesType, CoinsType } from "../../pages/Home/types"
-import { SInputArea, StyledInput, StyledSelect } from "./styles"
+import { CoinsType, CurrenciesType } from "../../pages/Home/types"
+import { ReactSelectElement, SInputArea, StyledInput } from "./styles"
 import { InputAreaPropsType } from "./types"
 
 export default function InputArea({ coins, currencies, price, setPrice, setCurrentCoin }: InputAreaPropsType) {
@@ -10,19 +10,19 @@ export default function InputArea({ coins, currencies, price, setPrice, setCurre
   const [coinInput, setCoinInput] = useState<string>("1")
   const [currencyInput, setCurrencyInput] = useState<string>("1")
 
-  const [oldCurrency, setOldCurrency] = useState<string>("USD")
+  const [oldCurrency, setOldCurrency] = useState<CurrenciesType>()
 
   useEffect(() => {
-    if (!coins?.length) return
-    handleCoinChange(coins[0].name)
+    if (!coins) return
+    handleCoinChange(coins[0])
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [coins])
 
-  const handleCoinChange = async (newValue: string) => {
-    const pair = coins?.find((c) => c.name === newValue)
+  const handleCoinChange = async (newValue: CoinsType) => {
+    const pair = coins?.find((c) => c.label === newValue?.label)
     try {
       const response = await fetch(
-        `https://j3tizqwiqb.execute-api.us-east-1.amazonaws.com/prod/getprice?symbol='${pair?.symbol}'`
+        `https://j3tizqwiqb.execute-api.us-east-1.amazonaws.com/prod/getprice?symbol='${pair?.value}'`
       )
       const data = await response.json()
       setPrice(data[0]?.Price)
@@ -33,9 +33,13 @@ export default function InputArea({ coins, currencies, price, setPrice, setCurre
     }
   }
 
-  const handleCurrencyChange = async (newValue: string) => {
-    convert(newValue)
-    setOldCurrency(newValue)
+  const handleCurrencyChange = async (newValue: CoinsType) => {
+    convert(newValue?.value)
+    const value: CurrenciesType = {
+      value: newValue?.value ? newValue?.value : "",
+      label: newValue?.value ? newValue?.value : ""
+    }
+    setOldCurrency(value)
   }
 
   const handleCoinInput = (value: string, _price?: number) => {
@@ -64,7 +68,7 @@ export default function InputArea({ coins, currencies, price, setPrice, setCurre
     setCoinInput(_coinInput)
   }
 
-  const convert = async (newCurrency: string) => {
+  const convert = async (newCurrency?: string) => {
     try {
       var myHeaders = new Headers()
       myHeaders.append("apikey", "t39onDuMTiuWKvwmvZ63ScfFPjU9ITJ8")
@@ -90,23 +94,32 @@ export default function InputArea({ coins, currencies, price, setPrice, setCurre
   return (
     <SInputArea>
       <StyledInput type="number" value={coinInput} onChange={(e) => handleCoinInput(e.target.value)} />
-      <StyledSelect
-        onChange={(e: React.ChangeEvent<HTMLSelectElement>) => {
-          handleCoinChange(e.target.value)
-        }}>
-        {coins && coins.map((coin: CoinsType) => <option key={coin.symbol}>{coin.name}</option>)}
-      </StyledSelect>
+      {coins && coins?.length > 0 && (
+        <ReactSelectElement
+          options={coins}
+          defaultValue={coins[0]}
+          onChange={(newValue: unknown) => {
+            handleCoinChange(newValue as CoinsType)
+          }}
+          isClearable
+          isSearchable
+          classNamePrefix="react-select"
+        />
+      )}
       =
       <StyledInput type="number" value={currencyInput} onChange={(e) => handlePriceInput(e.target.value)} />
-      <StyledSelect
-        className="currency"
-        onChange={(e: React.ChangeEvent<HTMLSelectElement>) => {
-          handleCurrencyChange(e.target.value)
-        }}>
-        {currencies?.map((currency: CurrenciesType) => (
-          <option key={currency.currency}>{currency.currency}</option>
-        ))}
-      </StyledSelect>
+      {currencies && currencies?.length > 0 && (
+        <ReactSelectElement
+          options={currencies}
+          defaultValue={currencies[0]}
+          onChange={(newValue: unknown) => {
+            handleCurrencyChange(newValue as CoinsType)
+          }}
+          isClearable
+          isSearchable
+          classNamePrefix="react-select"
+        />
+      )}
     </SInputArea>
   )
 }

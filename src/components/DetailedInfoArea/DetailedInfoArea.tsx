@@ -27,7 +27,7 @@ export default function DetailedInfoArea({ currentCoin, price }: DetailedInfoAre
     const fetchData = async () => {
       try {
         const responseDetails = await fetch(
-          `https://j3tizqwiqb.execute-api.us-east-1.amazonaws.com/prod/getdetails?symbol='${currentCoin?.name}'`
+          `https://j3tizqwiqb.execute-api.us-east-1.amazonaws.com/prod/getdetails?symbol='${currentCoin?.label}'`
         )
 
         const dataDetails = await responseDetails.json()
@@ -59,10 +59,10 @@ export default function DetailedInfoArea({ currentCoin, price }: DetailedInfoAre
       <DetailedInfoAreaHeading>
         <Coin>
           <img src={"blank"} alt="" />
-          <h1 className="name">{currentCoin?.name}</h1>
+          <h1 className="name">{currentCoin?.label}</h1>
         </Coin>
         <Price>
-          <Symbol>{currentCoin?.symbol}</Symbol>
+          <Symbol>{currentCoin?.value}</Symbol>
           <Value>{price}</Value>
           <Delta theme={{ isPositive: deltaPositive }}>
             {deltaPositive ? <span>▲</span> : <span>▼</span>}

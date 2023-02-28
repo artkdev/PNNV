@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react"
-import { Link } from "react-router-dom"
 import DetailedInfoArea from "../../components/DetailedInfoArea/DetailedInfoArea"
 import InputArea from "../../components/InputArea/InputArea"
 import { SHome } from "./styles"
@@ -8,7 +7,7 @@ import { CurrenciesType, CoinsType } from "./types"
 export default function Home() {
   const [coins, setCoins] = useState<CoinsType[]>()
   const [currencies, setCurrencies] = useState<CurrenciesType[]>()
-  const [currentCoin, setCurrentCoin] = useState<CoinsType>({ symbol: "BNBUSDT", name: "BNB" })
+  const [currentCoin, setCurrentCoin] = useState<CoinsType>()
   const [price, setPrice] = useState<number>(0)
 
   useEffect(() => {
@@ -23,10 +22,10 @@ export default function Home() {
         const dataCurrencies = await responseCurrencies.json()
 
         const mappedCoinsData = dataCoins.map((d: any) => {
-          return { symbol: d.Symbol, name: d.Name }
+          return { value: d.Symbol, label: d.Name }
         })
         const mappedCurrencyData = dataCurrencies.map((d: any) => {
-          return { currency: d.Currency }
+          return { label: d.Currency, value: d.Currency }
         })
 
         setCoins(mappedCoinsData)
@@ -49,7 +48,6 @@ export default function Home() {
         setCurrentCoin={setCurrentCoin}
       />
       <DetailedInfoArea currentCoin={currentCoin} price={price} />
-      <Link to={"/old"}>Go to old design</Link>
     </SHome>
   )
 }

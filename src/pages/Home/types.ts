@@ -1,8 +1,9 @@
 export type CurrenciesType = {
-  currency: string
+  value: string
+  label: string
 }
 
 export type CoinsType = {
-  symbol: string
-  name: string
+  value: string
+  label: string
 }
