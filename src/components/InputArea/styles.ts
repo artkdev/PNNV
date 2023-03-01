@@ -1,4 +1,5 @@
 import styled from "styled-components"
+import Select from "react-select"
 
 export const SInputArea = styled.div`
   width: 100%;
@@ -32,7 +33,7 @@ export const StyledInput = styled.input`
 `
 
 export const StyledSelect = styled.select`
-  width: 100%;
+  width: 150px;
   min-width: 150px;
   height: 75px;
   padding: 0px 14px;
@@ -44,4 +45,10 @@ export const StyledSelect = styled.select`
   font-size: 48px;
   font-weight: 300;
   text-align: center;
+`
+
+export const ReactSelectElement = styled(Select)`
+  .react-select__value-container {
+    width: 200px;
+  }
 `

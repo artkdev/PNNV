@@ -6,5 +6,5 @@ export type InputAreaPropsType = {
   currencies?: CurrenciesType[]
   price: number
   setPrice: Dispatch<SetStateAction<number>>
-  setCurrentCoin: Dispatch<SetStateAction<CoinsType>>
+  setCurrentCoin: Dispatch<SetStateAction<CoinsType | undefined>>
 }
