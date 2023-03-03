@@ -23,7 +23,7 @@ export const DetailedInfoAreaHeading = styled.div`
 
 export const Coin = styled.div`
   display: flex;
-  gap: 30px;
+  gap: 10px;
   align-items: center;
 `
 
@@ -90,4 +90,14 @@ export const DetailedFoot = styled.div`
   font-size: 21px;
   font-weight: 500;
   text-transform: uppercase;
+`
+
+export const IconContainer = styled.div`
+  height: 50px;
+  width: 50px;
+
+  svg {
+    height: 50px;
+    width: 50px;
+  }
 `
