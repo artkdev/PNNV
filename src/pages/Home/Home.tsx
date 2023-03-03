@@ -21,7 +21,7 @@ export default function Home() {
           "https://j3tizqwiqb.execute-api.us-east-1.amazonaws.com/prod/getcurrencies"
         )
 
-        const responseChart = await fetch("https://api.binance.com/api/v3/klines?symbol=BNBUSDT&interval=1d")
+        const responseChart = await fetch("https://api.binance.com/api/v3/uiKlines?symbol=BNBUSDT&interval=1d")
 
         const dataCoins = await responseCoins.json()
         const dataCurrencies = await responseCurrencies.json()
@@ -76,7 +76,7 @@ export default function Home() {
         setCurrentCoin={setCurrentCoin}
       />
       <DetailedInfoArea currentCoin={currentCoin} price={price} symbolDetails={symbolDetails} />
-      <AreaChart
+      {/* <AreaChart
         width={800}
         height={500}
         data={chartData}
@@ -91,7 +91,7 @@ export default function Home() {
         <YAxis />
         <Tooltip />
         <Area type="monotone" dataKey="closePrice" stroke="#8884d8" fill="#8884d8" />
-      </AreaChart>
+      </AreaChart> */}
     </SHome>
   )
 }
