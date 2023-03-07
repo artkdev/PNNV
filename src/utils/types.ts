@@ -10,10 +10,11 @@ export interface CandleStickSocketData {
   color: string
 }
 export interface TradeViewProps {
-  initialChartData: candleType[]
+  initialChartData: CandleType[]
   updatedata: CandleStickSocketData | null
   candleStickConfig: CandleStickConfig
   histogramConfig: HistogramConfig
+  areaConfig: AreaConfig
   chartLayout: {}
   containerStyle?: {
     [x: string]: any
@@ -41,6 +42,12 @@ export interface HistogramConfig {
     bottom?: number
   }
 }
+
+export interface AreaConfig {
+  lineColor?: string
+  topColor?: string
+  bottomColor?: string
+}
 export interface ChartSeries {
   setData: (data: []) => {}
   applyOptions: (data: {}) => {}
@@ -49,19 +56,21 @@ export interface ChartSeries {
 export interface TradeViewChart {
   addCandlestickSeries: (config: CandleStickConfig) => {}
   addHistogramSeries: (config: HistogramConfig) => {}
+  addAreaSeries: (config: AreaConfig) => {}
 }
 export interface Props {
   pair: string
   interval?: string
   candleStickConfig?: CandleStickConfig
   histogramConfig?: HistogramConfig
-  chartLayout?: DeffaultChartLayout
+  areaConfig?: AreaConfig
+  chartLayout?: DefaultChartLayout
   containerStyle?: {
     [x: string]: any
   }
 }
 
-export interface DeffaultChartLayout {
+export interface DefaultChartLayout {
   layout?: {
     backgroundColor: string
     textColor: string
@@ -89,7 +98,7 @@ export interface DeffaultChartLayout {
   }
 }
 
-export type candleType = {
+export type CandleType = {
   time: number
   open: number
   high: number

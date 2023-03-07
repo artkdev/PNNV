@@ -1,19 +1,26 @@
 import React, { memo, useEffect, useCallback, useState } from "react"
-import { condleStickDefaultConfig, defaultChartLayout, histogramDefaultConfig, WS_URL } from "../../utils/constants"
+import {
+  areaDefaultConfig,
+  condleStickDefaultConfig as candleStickDefaultConfig,
+  defaultChartLayout,
+  histogramDefaultConfig,
+  WS_URL
+} from "../../utils/constants"
 import TradeView from "./TradeView"
-import { Props, CandleStickSocketData, candleType } from "../../utils/types"
+import { Props, CandleStickSocketData, CandleType } from "../../utils/types"
 import { fetchCandleStickData } from "../../utils/fetchService"
 import { candleSocketAdaptor } from "../../utils/adaptor"
 
 const TradeViewChart: React.FC<Props> = ({
-  pair = "BTCBUSD",
+  pair = "BTBUSDT",
   interval = "1m",
-  candleStickConfig = condleStickDefaultConfig,
+  candleStickConfig = candleStickDefaultConfig,
   histogramConfig = histogramDefaultConfig,
+  areaConfig = areaDefaultConfig,
   chartLayout = defaultChartLayout,
   containerStyle
 }) => {
-  const [candleStickData, setCandleData] = useState<candleType[] | null>(null)
+  const [candleStickData, setCandleData] = useState<CandleType[] | null>(null)
   const [updatedata, setUpdateData] = useState<CandleStickSocketData | null>(null)
 
   const fetchCandleData = useCallback(async () => {
@@ -47,6 +54,7 @@ const TradeViewChart: React.FC<Props> = ({
       initialChartData={candleStickData}
       candleStickConfig={candleStickConfig}
       histogramConfig={histogramConfig}
+      areaConfig={areaConfig}
       chartLayout={chartLayout}
       containerStyle={containerStyle}
     />

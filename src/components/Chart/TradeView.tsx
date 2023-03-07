@@ -7,27 +7,42 @@ const TradeView: React.FC<TradeViewProps> = ({
   updatedata = null,
   candleStickConfig = {},
   histogramConfig = {},
+  areaConfig = {},
   chartLayout = {},
   containerStyle = {
     maxWidth: "100%",
-    maxHeight: "100vh",
+    maxHeight: "850px",
     height: "100%",
-    // display: "flex",
+    display: "flex",
+    flexDirection: "column",
+    gap: "20px",
     justifyContent: "center",
     alignItems: "center"
   }
 }) => {
   const resizeObserver = useRef<any>()
   const chartContainerRef = useRef<string | any>()
+  const chartAreContainerRef = useRef<string | any>()
   const chart = useRef<TradeViewChart | any>()
+  const chartArea = useRef<TradeViewChart | any>()
   const candleSeries = useRef<ChartSeries | any>()
-  // const volumeSeries = useRef<ChartSeries | any>()
+  const volumeSeries = useRef<ChartSeries | any>()
+  const areaSeries = useRef<ChartSeries | any>()
 
   const setInitialData = useCallback(() => {
     candleSeries.current = chart?.current?.addCandlestickSeries(candleStickConfig)
     candleSeries?.current.setData(initialChartData)
-    // volumeSeries.current = chart.current.addHistogramSeries(histogramConfig)
+
+    const areaData = initialChartData?.map((candle) => {
+      return { value: candle?.close, time: candle?.time }
+    })
+
+    areaSeries.current = chartArea?.current?.addAreaSeries(areaConfig)
+    areaSeries?.current.setData(areaData)
+
+    // volumeSeries.current = chart?.current?.addHistogramSeries(histogramConfig)
     // volumeSeries?.current?.setData(initialChartData)
+
     candleSeries.current.applyOptions({
       priceFormat: {
         type: "price",
@@ -37,8 +52,6 @@ const TradeView: React.FC<TradeViewProps> = ({
     })
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [candleStickConfig, histogramConfig, initialChartData])
-
-  //candleStickConfig, histogramConfig, initialChartData
 
   useEffect(() => {
     if (updatedata) {
@@ -54,7 +67,13 @@ const TradeView: React.FC<TradeViewProps> = ({
       height: chartContainerRef.current.clientHeight,
       ...chartLayout
     })
-    console.log("object")
+
+    if (chartArea.current) return // no duplication condition
+    chartArea.current = createChart(chartAreContainerRef.current, {
+      width: chartAreContainerRef.current.clientWidth,
+      height: chartAreContainerRef.current.clientHeight,
+      ...chartLayout
+    })
     setInitialData()
   }, [setInitialData, chartLayout])
 
@@ -71,13 +90,27 @@ const TradeView: React.FC<TradeViewProps> = ({
           minMove: 0.001
         }
       })
+      chartArea.current.applyOptions({
+        width,
+        height,
+        priceFormat: {
+          type: "price",
+          precision: 5,
+          minMove: 0.001
+        }
+      })
     })
 
     resizeObserver.current.observe(chartContainerRef.current)
 
     return () => resizeObserver.current.disconnect()
   }, [])
-  return <div ref={chartContainerRef} className="chartContainer" style={containerStyle} />
+  return (
+    <div style={{ height: "100vh" }}>
+      <div ref={chartContainerRef} className="chartContainer" style={containerStyle} />
+      <div ref={chartAreContainerRef} className="chartContainer" style={containerStyle} />
+    </div>
+  )
 }
 
 export default memo(TradeView)

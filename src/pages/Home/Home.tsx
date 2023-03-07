@@ -10,7 +10,6 @@ export default function Home() {
   const [currentCoin, setCurrentCoin] = useState<CoinsType>()
   const [symbolDetails, setSymbolDetails] = useState<SymbolDetailsType[]>()
   const [price, setPrice] = useState<number>(0)
-  const [chartData, setChartData] = useState<any[]>()
 
   useEffect(() => {
     const fetchData = async () => {
@@ -20,11 +19,8 @@ export default function Home() {
           "https://j3tizqwiqb.execute-api.us-east-1.amazonaws.com/prod/getcurrencies"
         )
 
-        const responseChart = await fetch("https://api.binance.com/api/v3/uiKlines?symbol=BNBUSDT&interval=1d")
-
         const dataCoins = await responseCoins.json()
         const dataCurrencies = await responseCurrencies.json()
-        const dataChart = await responseChart.json()
 
         const mappedCoinsData = dataCoins.map((d: any) => {
           return { value: d.Symbol, label: d.Name }
@@ -35,28 +31,10 @@ export default function Home() {
         const mappedSymbolDetails = dataCoins.map((d: any) => {
           return { name: d.Name, fullName: d.FullName, logo: d.Logo }
         })
-        const mappedChartData = dataChart.map((d: any) => {
-          return {
-            closeTime: new Date(d[6]).toLocaleDateString(), // close time
-            closePrice: d[4]
-            // numberOfTrades: d[8],
-            // volume: d[5]
-            // openTime: d[0],
-            // openPrice: d[1],
-            // highPrice: d[2],
-            // lowPrice: d[3],
-            // volume: d[5],
-            // quoteAssetVolume: d[7],
-            // numberOfTrades: d[8],
-            // takerBuyBaseAssetVolume: d[9],
-            // takerBuyQuoteBaseAssetVolume: d[10]
-          }
-        })
 
         setCoins(mappedCoinsData)
         setCurrencies(mappedCurrencyData)
         setSymbolDetails(mappedSymbolDetails)
-        setChartData(mappedChartData)
       } catch (error) {
         console.log(error)
       }
