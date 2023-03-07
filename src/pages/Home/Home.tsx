@@ -53,6 +53,22 @@ export default function Home() {
         setCurrentCoin={setCurrentCoin}
       />
       <DetailedInfoArea currentCoin={currentCoin} price={price} symbolDetails={symbolDetails} />
+      {/* <AreaChart
+        width={800}
+        height={500}
+        data={chartData}
+        margin={{
+          top: 10,
+          right: 30,
+          left: 0,
+          bottom: 0
+        }}>
+        <CartesianGrid strokeDasharray="3 3" />
+        <XAxis dataKey="closeTime" />
+        <YAxis />
+        <Tooltip />
+        <Area type="monotone" dataKey="closePrice" stroke="#8884d8" fill="#8884d8" />
+      </AreaChart> */}
     </SHome>
   )
 }
