@@ -21,13 +21,13 @@ const TradeView: React.FC<TradeViewProps> = ({
   const chartContainerRef = useRef<string | any>()
   const chart = useRef<TradeViewChart | any>()
   const candleSeries = useRef<ChartSeries | any>()
-  const volumeSeries = useRef<ChartSeries | any>()
+  // const volumeSeries = useRef<ChartSeries | any>()
 
   const setInitialData = useCallback(() => {
     candleSeries.current = chart?.current?.addCandlestickSeries(candleStickConfig)
     candleSeries?.current.setData(initialChartData)
-    volumeSeries.current = chart.current.addHistogramSeries(histogramConfig)
-    volumeSeries?.current?.setData(initialChartData)
+    // volumeSeries.current = chart.current.addHistogramSeries(histogramConfig)
+    // volumeSeries?.current?.setData(initialChartData)
     candleSeries.current.applyOptions({
       priceFormat: {
         type: "price",
@@ -35,21 +35,26 @@ const TradeView: React.FC<TradeViewProps> = ({
         minMove: 0.001
       }
     })
-  }, [initialChartData, candleStickConfig, histogramConfig])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [candleStickConfig, histogramConfig, initialChartData])
+
+  //candleStickConfig, histogramConfig, initialChartData
 
   useEffect(() => {
     if (updatedata) {
       candleSeries?.current?.update(updatedata)
-      volumeSeries?.current?.update(updatedata)
+      // volumeSeries?.current?.update(updatedata)
     }
   }, [updatedata])
 
   useEffect(() => {
+    if (chart.current) return // no duplication condition
     chart.current = createChart(chartContainerRef.current, {
       width: chartContainerRef.current.clientWidth,
       height: chartContainerRef.current.clientHeight,
       ...chartLayout
     })
+    console.log("object")
     setInitialData()
   }, [setInitialData, chartLayout])
 

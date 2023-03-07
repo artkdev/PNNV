@@ -3,7 +3,6 @@ import DetailedInfoArea from "../../components/DetailedInfoArea/DetailedInfoArea
 import InputArea from "../../components/InputArea/InputArea"
 import { SHome } from "./styles"
 import { CurrenciesType, CoinsType, SymbolDetailsType } from "./types"
-import { AreaChart, CartesianGrid, Tooltip, XAxis, YAxis, Area } from "recharts"
 
 export default function Home() {
   const [coins, setCoins] = useState<CoinsType[]>()

@@ -1,7 +1,7 @@
 import React, { memo, useEffect, useCallback, useState } from "react"
 import { condleStickDefaultConfig, defaultChartLayout, histogramDefaultConfig, WS_URL } from "../../utils/constants"
 import TradeView from "./TradeView"
-import { Props, CandleStickSocketData } from "../../utils/types"
+import { Props, CandleStickSocketData, candleType } from "../../utils/types"
 import { fetchCandleStickData } from "../../utils/fetchService"
 import { candleSocketAdaptor } from "../../utils/adaptor"
 
@@ -13,7 +13,7 @@ const TradeViewChart: React.FC<Props> = ({
   chartLayout = defaultChartLayout,
   containerStyle
 }) => {
-  const [candleStickData, setCandleData] = useState<[] | null>(null)
+  const [candleStickData, setCandleData] = useState<candleType[] | null>(null)
   const [updatedata, setUpdateData] = useState<CandleStickSocketData | null>(null)
 
   const fetchCandleData = useCallback(async () => {

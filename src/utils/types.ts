@@ -10,7 +10,7 @@ export interface CandleStickSocketData {
   color: string
 }
 export interface TradeViewProps {
-  initialChartData: []
+  initialChartData: candleType[]
   updatedata: CandleStickSocketData | null
   candleStickConfig: CandleStickConfig
   histogramConfig: HistogramConfig
@@ -87,4 +87,14 @@ export interface DeffaultChartLayout {
     timeVisible: boolean
     secondsVisible: boolean
   }
+}
+
+export type candleType = {
+  time: number
+  open: number
+  high: number
+  low: number
+  close: number
+  value: number
+  color: string
 }

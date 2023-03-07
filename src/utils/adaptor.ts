@@ -1,4 +1,4 @@
-export const candleStickAdaptor = (data) => {
+export const candleStickAdaptor = (data: any) => {
   const [
     openTime,
     open,
@@ -11,8 +11,8 @@ export const candleStickAdaptor = (data) => {
     numberOfTrades,
     takerBuyBaseAssetVolume,
     takerBuyQuotessetVolume,
-    ignore,
-  ] = data;
+    ignore
+  ] = data
   return {
     time: openTime / 1000,
     open: parseFloat(open),
@@ -20,7 +20,7 @@ export const candleStickAdaptor = (data) => {
     low: parseFloat(low),
     close: parseFloat(close),
     value: parseFloat(volume),
-    color: open < close ? "#005a40" : "#82112b",
+    color: open < close ? "#005a40" : "#82112b"
 
     // closeTime,
     // quoteAssetVolume,
@@ -28,13 +28,13 @@ export const candleStickAdaptor = (data) => {
     // takerBuyBaseAssetVolume,
     // takerBuyQuotessetVolume,
     // ignore,
-  };
-};
+  }
+}
 
-export const candleSocketAdaptor = (data) => {
+export const candleSocketAdaptor = (data: any) => {
   const {
-    k: { T, o, c, h, l, v, V },
-  } = data;
+    k: { T, o, c, h, l, v, V }
+  } = data
   return {
     open: parseFloat(o),
     high: parseFloat(h),
@@ -42,6 +42,6 @@ export const candleSocketAdaptor = (data) => {
     close: parseFloat(c),
     time: T / 1000,
     value: (parseFloat(v) + parseFloat(V)) / 2,
-    color: o < c ? "#005a40" : "#82112b",
-  };
-};
+    color: o < c ? "#005a40" : "#82112b"
+  }
+}
