@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react"
 import DetailedInfoArea from "../../components/DetailedInfoArea/DetailedInfoArea"
 import InputArea from "../../components/InputArea/InputArea"
-import { SHome } from "./styles"
+import { Container } from "./styles"
 import { CurrenciesType, CoinsType, SymbolDetailsType } from "./types"
 
 export default function Home() {
@@ -44,7 +44,7 @@ export default function Home() {
   }, [])
 
   return (
-    <SHome>
+    <Container>
       <InputArea
         coins={coins}
         currencies={currencies}
@@ -53,6 +53,6 @@ export default function Home() {
         setCurrentCoin={setCurrentCoin}
       />
       <DetailedInfoArea currentCoin={currentCoin} price={price} symbolDetails={symbolDetails} />
-    </SHome>
+    </Container>
   )
 }
