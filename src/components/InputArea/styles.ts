@@ -1,7 +1,7 @@
 import styled from "styled-components"
 import Select from "react-select"
 
-export const SInputArea = styled.div`
+export const Container = styled.div`
   width: 100%;
   max-width: 900px;
   min-width: 750px;
@@ -41,5 +41,15 @@ export const ReactSelectElement = styled(Select)`
     height: 100px;
 
     border-radius: 0px 6px 6px 0px;
+    flex-direction: row-reverse;
+  }
+
+  .react-select__clear-indicator {
+    position: absolute;
+    right: 0;
+  }
+
+  .react-select__value-container {
+    justify-content: flex-start;
   }
 `

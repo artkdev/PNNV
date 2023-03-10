@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react"
 import { CoinsType, CurrenciesType } from "../../pages/Home/types"
-import { ReactSelectElement, SInputArea, StyledInput } from "./styles"
+import Select from "../Select/Select"
+import { Container, StyledInput } from "./styles"
 import { InputAreaPropsType } from "./types"
 
 export default function InputArea({ coins, currencies, price, setPrice, setCurrentCoin }: InputAreaPropsType) {
@@ -92,7 +93,7 @@ export default function InputArea({ coins, currencies, price, setPrice, setCurre
   }
 
   return (
-    <SInputArea>
+    <Container>
       <StyledInput
         type="number"
         value={coinInput}
@@ -103,15 +104,11 @@ export default function InputArea({ coins, currencies, price, setPrice, setCurre
         }}
       />
       {coins && coins?.length > 0 && (
-        <ReactSelectElement
-          options={coins}
-          defaultValue={coins[0]}
+        <Select
+          options={coins.slice(0, 3)}
           onChange={(newValue: unknown) => {
             handleCoinChange(newValue as CoinsType)
           }}
-          isClearable
-          isSearchable
-          classNamePrefix="react-select"
         />
       )}
       =
@@ -124,17 +121,13 @@ export default function InputArea({ coins, currencies, price, setPrice, setCurre
         }}
       />
       {currencies && currencies?.length > 0 && (
-        <ReactSelectElement
+        <Select
           options={currencies}
-          defaultValue={currencies[0]}
           onChange={(newValue: unknown) => {
             handleCurrencyChange(newValue as CoinsType)
           }}
-          isClearable
-          isSearchable
-          classNamePrefix="react-select"
         />
       )}
-    </SInputArea>
+    </Container>
   )
 }
