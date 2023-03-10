@@ -15,17 +15,13 @@ export const SInputArea = styled.div`
 `
 
 export const StyledInput = styled.input`
-  width: 100%;
-  min-width: 150px;
-  height: 75px;
-  padding: 0px 14px;
+  font-size: 1.3em;
+  padding: 0.5em;
   border-radius: 6px 0px 0px 6px;
   box-shadow: none;
   border: 1.5px solid rgb(204, 204, 204);
-  font-size: 48px;
-  font-weight: 300;
-  text-align: right;
-  :-webkit-inner-spin-button,
+
+  ::-webkit-inner-spin-button,
   ::-webkit-outer-spin-button {
     -webkit-appearance: none;
     margin: 0;

@@ -93,7 +93,15 @@ export default function InputArea({ coins, currencies, price, setPrice, setCurre
 
   return (
     <SInputArea>
-      <StyledInput type="number" value={coinInput} onChange={(e) => handleCoinInput(e.target.value)} />
+      <StyledInput
+        type="number"
+        value={coinInput}
+        autoFocus
+        style={{ width: coinInput.length + 2 + "ch" }}
+        onChange={(e) => {
+          handleCoinInput(e.target.value)
+        }}
+      />
       {coins && coins?.length > 0 && (
         <ReactSelectElement
           options={coins}
@@ -107,7 +115,14 @@ export default function InputArea({ coins, currencies, price, setPrice, setCurre
         />
       )}
       =
-      <StyledInput type="number" value={currencyInput} onChange={(e) => handlePriceInput(e.target.value)} />
+      <StyledInput
+        type="number"
+        style={{ width: currencyInput.length + 2 + "ch" }}
+        value={currencyInput}
+        onChange={(e) => {
+          handlePriceInput(e.target.value)
+        }}
+      />
       {currencies && currencies?.length > 0 && (
         <ReactSelectElement
           options={currencies}

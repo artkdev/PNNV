@@ -19,7 +19,6 @@ export default function DetailedInfoArea({ currentCoin, price, symbolDetails }: 
   const [deltaPercentage, setDeltaPercentage] = useState<string>()
   const [deltaPositive, setDeltaPositive] = useState<boolean>()
   const [marketCap, setMarketCap] = useState<number>()
-  const [volumeToMarketCap, setVolumeToMarketCap] = useState<number>()
   const [circulatingSupply, setCirculatingSupply] = useState<number>()
   const [logo, setLogo] = useState<string>()
   const [fullName, setFullName] = useState<string>()
@@ -52,12 +51,10 @@ export default function DetailedInfoArea({ currentCoin, price, symbolDetails }: 
   useEffect(() => {
     if (!details) return
     const cs = parseFloat(details.Cs)
-    const vol = parseFloat(details.VolValue)
     const marketCap = cs * price
     setDeltaPositive(parseFloat(details.ChangePricePercent) >= 0)
     setDeltaPercentage(details.ChangePricePercent)
     setMarketCap(marketCap)
-    setVolumeToMarketCap(vol / marketCap)
     setCirculatingSupply(marketCap / price)
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [details])
